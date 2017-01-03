@@ -3,6 +3,13 @@ $.locales['en'].market = {
     completeDownload: ':plugin-name was installed successfully.',
     failedDownload: 'Failed to install. Message: :message',
 
+    preview: {
+        title: 'Notice of Preview',
+        text: 'This is a version of preview and it may not run well. Sure to download?',
+        confirmButton: 'OK',
+        cancelButton: 'Cancel'
+    },
+
     //Error
     error: {
         requestPermission: 'You do not have permission to access.',

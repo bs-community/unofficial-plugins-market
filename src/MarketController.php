@@ -136,9 +136,11 @@ class MarketController extends Controller
 
                 'operations'   =>  '<input type="button" id="plugin-'.
                                     $plugin['id'].
-                                    '" class="btn btn-primary btn-sm" onclick="download(\''.
+                                    '" class="btn btn-primary btn-sm" onclick="readyToDownload(\''.
                                     $plugin['id'].
-                                    '\', \''.$plugin['display-name'].'\');" value="'.
+                                    '\', \''.$plugin['display-name'].'\', '.
+                                    (!empty($plugin['isPreview']) ? $plugin['isPreview'] : 0).
+                                    ');" value="'.
                                     trans('GPlane\PluginsMarket::market.operations.download').
                                     '" /><a class="btn btn-warning btn-sm" href="'.
                                     (empty($plugin['brief']) ? '' : $plugin['brief']).
