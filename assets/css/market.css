@@ -1,0 +1,3 @@
+.btn { margin-right: 4px; }
+td#description { width: 35%; }
+@media (max-width: 767px) { .content-header > h1 > small { display: none; } }

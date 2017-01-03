@@ -1,0 +1,15 @@
+display-name: Name
+description: Description
+author: Author
+version: Version
+size: Size (Zipped)
+
+operations:
+    title: Operations
+    download: Download Now
+    check-brief: See Brief
+    brief-hint: This link may be a homepage of author.
+
+empty: No plugins~
+no-description: (No description)
+unknown: (Unknown)

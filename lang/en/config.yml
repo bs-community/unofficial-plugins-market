@@ -1,0 +1,24 @@
+title: Plugins Market Config
+
+options:
+    title: Configurations
+    source-text: Plugins Market Source
+    source-hint: You can use path relative to homepage or full URL.But it must be an accessible JSON file.
+
+    auto-enable-text: Auto Enable
+    auto-enable-label: Enable plugin automatically after installation
+
+    replace-default-market-text: Replace Default
+    replace-default-market-label: Replace default plugins market
+
+readme:
+    title: ReadMe
+    text: |
+      This plugin <strong>will not provide any plugins and information of market</strong>. It only can get a list of available plugins according to the preset source, also you can download plugins by this plugin.
+
+list:
+    title: Hot Plugins Source
+    text: |
+      You can <a href="https://github.com/g-plane/unofficial-plugins-market/issues/new" target="_blank">contact me</a> if you want to show your source here.
+
+    source1: A source maintained by author of this plugin

@@ -1,0 +1,9 @@
+{
+  "name": "plugins-market",
+  "version": "0.2",
+  "title": "GPlane\\PluginsMarket::general.name",
+  "description": "GPlane\\PluginsMarket::general.description",
+  "author": "gplane",
+  "namespace": "GPlane\\PluginsMarket",
+  "config": "config.tpl"
+}
