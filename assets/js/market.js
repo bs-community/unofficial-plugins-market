@@ -23,11 +23,27 @@ $('#plugin-table').DataTable({
     ]
 });
 
+function readyToDownload(pluginId, displayName, isPreview) {
+    if (isPreview) {
+        swal({
+            title: trans('market.preview.title'),
+            text: trans('market.preview.text'),
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: trans('market.preview.confirmButton'),
+            cancelButtonText: trans('market.preview.cancelButton')
+        }).then(function () { download(pluginId, displayName); });
+    } else {
+        return download(pluginId, displayName);
+    }
+};
+
 function download(pluginId, displayName) {
     $('input#plugin-' + pluginId).attr({ disabled: true });
     $('input#plugin-' + pluginId).val(trans('market.downloading'));
     toastr.info(trans('market.readyToDownload', { 'plugin-name': displayName }));
-    $.post('/admin/plugins-market/download',
+    $.post(
+        '/admin/plugins-market/download',
         { id: pluginId },
         function (data) {
             switch (data.code) {
@@ -40,6 +56,7 @@ function download(pluginId, displayName) {
                         $.post('/admin/plugins/manage', { action: 'enable', id: pluginId }, function (data) {
                             if (data.errno == 0) {
                                 toastr.success(data.msg);
+                                $.post( '/admin/plugins-market/first-run', { id: pluginId }, function (data) {});
                             }
                         });
                     }
