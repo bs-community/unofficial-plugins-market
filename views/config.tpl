@@ -37,15 +37,13 @@
                 <div class="box-body">
                     <blockquote><p><em>高考不简单</em></p></blockquote>
                     {!! trans('GPlane\PluginsMarket::config.readme.text') !!}
-                    <br>
-                    <span>Powered by <a href="https://github.com/g-plane" target="_blank">GPlane</a></span>
+                    <br><br>
+                    <span style="float: right;">Powered by <a href="https://github.com/g-plane" target="_blank">GPlane</a></span>
                 </div><!-- /.box-body -->
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ trans('GPlane\PluginsMarket::config.list.title') }}</h3>
