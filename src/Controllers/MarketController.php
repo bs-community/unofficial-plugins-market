@@ -1,11 +1,12 @@
 <?php
 
-namespace GPlane\PluginsMarket;
+namespace GPlane\PluginsMarket\Controllers;
 
 use Utils;
 use ZipArchive;
 use App\Services\Storage;
 use Illuminate\Http\Request;
+use App\Services\PluginManager;
 use App\Http\Controllers\Controller;
 use App\Exceptions\PrettyPageException;
 
@@ -98,6 +99,16 @@ class MarketController extends Controller
         //Complete
         Storage::removeDir($tmp_dir);
         return response()->json(array('code' => 0, 'enable' => option('auto_enable_plugin')));
+    }
+
+    public function firstRunPlugin(Request $request, PluginManager $plugins)
+    {
+        if (!$request->has('id')) {
+            return;
+        }
+        $id = $request->input('id');
+        $plugin = $plugins->getPlugin($id);
+        event(new \GPlane\PluginsMarket\Events\PluginWasInstalled($plugin));
     }
 
     private static function getPluginList()

@@ -23,12 +23,13 @@ return function (Dispatcher $events) {
     Hook::addRoute(function ($routers) {
 
         $routers->group(['middleware' => ['web', 'admin'],
-                        'namespace'  => 'GPlane\PluginsMarket',
+                        'namespace'  => 'GPlane\PluginsMarket\Controllers',
                         'prefix'     => 'admin/plugins-market'],
                         function ($router) {
                             $router->get('/', 'MarketController@show');
                             $router->get('/data', 'MarketController@ajaxPluginList');
                             $router->post('/download', 'MarketController@downloadPlugin');
+                            $router->post('/first-run', 'MarketController@firstRunPlugin');
                         });
     });
 };
