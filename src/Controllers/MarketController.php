@@ -147,13 +147,13 @@ class MarketController extends Controller
 
                 'operations'   =>  '<input type="button" id="plugin-'.
                                     $plugin['id'].
-                                    '" class="btn btn-primary btn-sm" onclick="readyToDownload(\''.
+                                    '" class="btn '.$button_class_name.' btn-sm" onclick="readyToDownload(\''.
                                     $plugin['id'].
                                     '\', \''.$plugin['display-name'].'\', '.
                                     (!empty($plugin['isPreview']) ? $plugin['isPreview'] : 0).
                                     ');" value="'.
                                     trans('GPlane\PluginsMarket::market.operations.download').
-                                    '" /><a class="btn btn-warning btn-sm" href="'.
+                                    '" /><a class="btn btn-default btn-sm" href="'.
                                     (empty($plugin['brief']) ? '' : $plugin['brief']).
                                     '" target="_blank" title="'.trans('GPlane\PluginsMarket::market.operations.brief-hint').'">'.
                                     trans('GPlane\PluginsMarket::market.operations.check-brief').

@@ -10,9 +10,7 @@ $('#plugin-table').DataTable({
     ordering: false,
     serverSide: false,   //未知原因，开了这个会有问题
     ajax: '/admin/plugins-market/data',
-    createdRow: function (row, data, index) {
-        $('td', row).eq(1).attr('id', 'description');
-    },
+    createdRow: function (row, data, index) {},
     columns: [
         {data: 'display-name'},
         {data: 'description', 'width': '35%'},
