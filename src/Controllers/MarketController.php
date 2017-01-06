@@ -19,24 +19,40 @@ class MarketController extends Controller
 
     public function ajaxPluginList()
     {
-        $temp_list = self::getPluginList();
-        if (empty($temp_list)) {
+        $installed_plugins_version_list = self::loadInstalledPluginList();
+        $raw_list = self::getPluginList();
+        if (empty($raw_list)) {
             return response()->json(array('recordsTotal' => 0, 'data' => array()));
         }
         $plugins_list = array();
-        $plugin_id_list = array_keys($temp_list);
+        $plugin_id_list = array_keys($raw_list);
         foreach ($plugin_id_list as $plugin_id) {
-            $eachPlugin = self::getSinglePluginInfo($temp_list[$plugin_id]);
+            $eachPlugin = self::getSinglePluginInfo($raw_list[$plugin_id]);
             if (!$eachPlugin) {
                 continue;
             } else {
+                $version_btn_class = '';
+                $version_status_text = '';
+                if (
+                    (!empty($raw_list[$plugin_id]['isPreview']) && $raw_list[$plugin_id]['isPreview']) ||
+                    (!empty($eachPlugin['version']) && stripos($eachPlugin['version'], 'rc') > 0) ||
+                    (!empty($eachPlugin['version']) && stripos($eachPlugin['version'], 'beta') > 0) ||
+                    (!empty($eachPlugin['version']) && stripos($eachPlugin['version'], 'alpha') > 0)) {
+                    $version_btn_class = 'btn-warning';
+                    $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-pre');
+                } elseif (version_compare($eachPlugin['version'], $installed_plugins_version_list[$eachPlugin['id']]) == 1) {
+                    $version_btn_class = 'btn-success';
+                    $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-new');
+                } else
+                    $version_btn_class = 'btn-primary';
+                $eachPlugin['operations'] = sprintf($eachPlugin['operations'], $version_btn_class, $version_status_text);
                 $plugins_list[] = $eachPlugin;
             }
         }
-        $result = array(
+        $datatables_result = array(
             'recordsTotal'    => sizeof($plugins_list),
             'data'            => $plugins_list);
-        return response()->json($result);
+        return response()->json($datatables_result);
     }
 
     public function downloadPlugin(Request $request)
@@ -128,11 +144,8 @@ class MarketController extends Controller
         if (empty($plugin['id']) || empty($plugin['display-name']) || empty($plugin['author']) || empty($plugin['url'])) {
             return false;
         } else {
-            $button_class_name = '';
-            if (!empty($plugin['isPreview']) && $plugin['isPreview']) $button_class_name = 'btn-warning';
-            else $button_class_name = 'btn-primary';
             return array(
-                'id'         =>  $plugin['id'],
+                'id'           =>  $plugin['id'],
 
                 'display-name' =>  $plugin['display-name'],
 
@@ -144,13 +157,11 @@ class MarketController extends Controller
 
                 'size'         =>  empty($plugin['size']) ? trans('GPlane\PluginsMarket::market.unknown') : $plugin['size'],
 
-                'operations'   =>  '<input type="button" id="plugin-'.
+                'operations'   =>  '<input type="button" id="plugin_'.
                                     $plugin['id'].
-                                    '" class="btn '.$button_class_name.' btn-sm" onclick="readyToDownload(\''.
+                                    '" class="btn %s btn-sm" title="%s" onclick="readyToDownload(\''.
                                     $plugin['id'].
-                                    '\', \''.$plugin['display-name'].'\', '.
-                                    (!empty($plugin['isPreview']) ? $plugin['isPreview'] : 0).
-                                    ');" value="'.
+                                    '\', \''.$plugin['display-name'].'\');" value="'.
                                     trans('GPlane\PluginsMarket::market.operations.download').
                                     '" /><a class="btn btn-default btn-sm" href="'.
                                     (empty($plugin['brief']) ? '' : $plugin['brief']).
@@ -159,5 +170,22 @@ class MarketController extends Controller
                                     '</a>'
                                     );
         }
+    }
+
+    private static function loadInstalledPluginList()
+    {
+        $version_list = array();
+        $resource = opendir(base_path('plugins'));
+        while ($file_name = @readdir($resource)) {
+            if ($file_name == '.' || $file_name == '..')
+                continue;
+            $plugin_path = base_path('plugins').'/'.$file_name;
+            if (is_dir($plugin_path)) {
+                $plugin_info = json_decode(file_get_contents($plugin_path.'/package.json'), true);
+                $version_list[$plugin_info['name']] = $plugin_info['version'];
+            }
+        }
+        closedir($resource);
+        return $version_list;
     }
 }

@@ -2,13 +2,15 @@ display-name: 名称
 description: 描述
 author: 作者
 version: 版本
-size: 大小（压缩后）
+size: 大小
 
 operations:
     title: 操作
     download: 下载插件
     check-brief: 查看介绍
     brief-hint: 这个链接有可能是作者的主页
+    version-new: 新版本可用
+    version-pre: 预览版 / 预发布版
 
 empty: 没有插件哦~
 no-description: （暂无）

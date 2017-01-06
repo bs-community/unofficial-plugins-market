@@ -13,16 +13,16 @@ $('#plugin-table').DataTable({
     createdRow: function (row, data, index) {},
     columns: [
         {data: 'display-name'},
-        {data: 'description', 'width': '35%'},
-        {data: 'author'},
-        {data: 'version'},
+        {data: 'description', 'width': '40%'},
+        {data: 'author', 'width': '15%'},
+        {data: 'version', 'width': '7%'},
         {data: 'size', 'width': '10%'},
-        {data: 'operations'}
+        {data: 'operations', 'width': '15%'}
     ]
 });
 
-function readyToDownload(pluginId, displayName, isPreview) {
-    if (isPreview) {
+function readyToDownload(pluginId, displayName) {
+    if ($('#plugin_' + pluginId).hasClass('btn-warning')) {
         swal({
             title: trans('market.preview.title'),
             text: trans('market.preview.text'),
@@ -30,7 +30,7 @@ function readyToDownload(pluginId, displayName, isPreview) {
             showCancelButton: true,
             confirmButtonText: trans('market.preview.confirmButton'),
             cancelButtonText: trans('market.preview.cancelButton')
-        }).then(function () { download(pluginId, displayName); });
+        }).then(function () { return download(pluginId, displayName); });
     } else {
         return download(pluginId, displayName);
     }
@@ -54,7 +54,7 @@ function download(pluginId, displayName) {
                         $.post('/admin/plugins/manage', { action: 'enable', id: pluginId }, function (data) {
                             if (data.errno == 0) {
                                 toastr.success(data.msg);
-                                $.post( '/admin/plugins-market/first-run', { id: pluginId }, function (data) {});
+                                $.post('/admin/plugins-market/first-run', { id: pluginId }, function (data) {});
                             }
                         });
                     }
