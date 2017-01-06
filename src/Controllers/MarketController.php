@@ -24,8 +24,9 @@ class MarketController extends Controller
             return response()->json(array('recordsTotal' => 0, 'data' => array()));
         }
         $plugins_list = array();
-        foreach ($temp_list as $plugin) {
-            $eachPlugin = self::getSinglePluginInfo($plugin);
+        $plugin_id_list = array_keys($temp_list);
+        foreach ($plugin_id_list as $plugin_id) {
+            $eachPlugin = self::getSinglePluginInfo($temp_list[$plugin_id]);
             if (!$eachPlugin) {
                 continue;
             } else {
@@ -57,13 +58,8 @@ class MarketController extends Controller
         }
 
         //Gather URL
-        $url = '';
         $temp_list = self::getPluginList();
-        foreach ($temp_list as $plugin) {
-            if (!empty($plugin['id']) && $plugin['id'] == $id) {
-                $url = $plugin['url'];
-            }
-        }
+        $url = $temp_list[$id]['url'];
 
         //Connection check
         if (!$fp = @fopen($url, 'rb')) {
@@ -132,6 +128,9 @@ class MarketController extends Controller
         if (empty($plugin['id']) || empty($plugin['display-name']) || empty($plugin['author']) || empty($plugin['url'])) {
             return false;
         } else {
+            $button_class_name = '';
+            if (!empty($plugin['isPreview']) && $plugin['isPreview']) $button_class_name = 'btn-warning';
+            else $button_class_name = 'btn-primary';
             return array(
                 'id'         =>  $plugin['id'],
 
