@@ -37,7 +37,7 @@ class MarketController extends Controller
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'alpha') > 0)) {
                     $version_btn_class = 'btn-warning';
                     $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-pre');
-                } elseif (version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['id']]) == 1) {
+                } elseif (!empty($each_plugin['version']) && version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['id']]) == 1) {
                     $version_btn_class = 'btn-success';
                     $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-new');
                 } else

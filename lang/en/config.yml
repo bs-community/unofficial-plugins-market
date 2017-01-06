@@ -11,6 +11,11 @@ options:
     replace-default-market-text: Replace Default
     replace-default-market-label: Replace default plugins market
 
+    update-notif-text: Update Notification
+    update-none: No notification
+    update-release-only: Release only
+    update-both: Both release and preview
+
 readme:
     title: ReadMe
     text: |

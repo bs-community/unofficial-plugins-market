@@ -11,6 +11,11 @@ options:
     replace-default-market-text: 替换默认
     replace-default-market-label: 接管系统默认的插件市场
 
+    update-notif-text: 插件更新提醒
+    update-none: 不提醒
+    update-release-only: 仅正式版
+    update-both: 全部提醒
+
 readme:
     title: 插件简介
     text: |

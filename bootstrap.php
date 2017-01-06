@@ -1,11 +1,19 @@
 <?php
 
 use App\Services\Hook;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Events\Dispatcher;
 
-return function (Dispatcher $events) {
+return function (Dispatcher $events, Request $request) {
 
     Hook::registerPluginTransScripts('plugins-market');
+
+    if ($request->is('admin/*') || $request->is('admin')) {
+        $events->listen(App\Events\RenderingFooter::class, function ($event)
+        {
+            $event->addContent('<script src="'.plugin_assets('plugins-market', 'assets/js/check.js').'"></script>');
+        });
+    }
 
     //Determine to if replace default market of Blessing Skin Server
     if (option('replace_default_market')) {
@@ -28,8 +36,10 @@ return function (Dispatcher $events) {
                         function ($router) {
                             $router->get('/', 'MarketController@show');
                             $router->get('/data', 'MarketController@ajaxPluginList');
-                            $router->post('/download', 'MarketController@downloadPlugin');
-                            $router->post('/first-run', 'MarketController@firstRunPlugin');
+                            $router->get('/check', 'PluginController@updateCheck');
+                            $router->post('/download', 'PluginController@downloadPlugin');
+                            $router->post('/first-run', 'PluginController@firstRunPlugin');
                         });
+
     });
 };
