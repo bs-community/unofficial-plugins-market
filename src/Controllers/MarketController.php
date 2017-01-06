@@ -24,32 +24,49 @@ class MarketController extends Controller
         $plugins_list = array();
         $plugin_id_list = array_keys($raw_list);
         foreach ($plugin_id_list as $plugin_id) {
-            $eachPlugin = self::getSinglePluginInfo($raw_list[$plugin_id]);
-            if (!$eachPlugin) {
+            $each_plugin = self::getSinglePluginInfo($raw_list[$plugin_id]);
+            if (!$each_plugin) {
                 continue;
             } else {
                 $version_btn_class = '';
                 $version_status_text = '';
                 if (
                     (!empty($raw_list[$plugin_id]['isPreview']) && $raw_list[$plugin_id]['isPreview']) ||
-                    (!empty($eachPlugin['version']) && stripos($eachPlugin['version'], 'rc') > 0) ||
-                    (!empty($eachPlugin['version']) && stripos($eachPlugin['version'], 'beta') > 0) ||
-                    (!empty($eachPlugin['version']) && stripos($eachPlugin['version'], 'alpha') > 0)) {
+                    (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'rc') > 0) ||
+                    (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'beta') > 0) ||
+                    (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'alpha') > 0)) {
                     $version_btn_class = 'btn-warning';
                     $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-pre');
-                } elseif (version_compare($eachPlugin['version'], $installed_plugins_version_list[$eachPlugin['id']]) == 1) {
+                } elseif (version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['id']]) == 1) {
                     $version_btn_class = 'btn-success';
                     $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-new');
                 } else
                     $version_btn_class = 'btn-primary';
-                $eachPlugin['operations'] = sprintf($eachPlugin['operations'], $version_btn_class, $version_status_text);
-                $plugins_list[] = $eachPlugin;
+                $each_plugin['operations'] = sprintf($each_plugin['operations'], $version_btn_class, $version_status_text);
+                $plugins_list[] = $each_plugin;
             }
         }
         $datatables_result = array(
             'recordsTotal'    => sizeof($plugins_list),
             'data'            => $plugins_list);
         return response()->json($datatables_result);
+    }
+
+    public static function loadInstalledPluginList()
+    {
+        $version_list = array();
+        $resource = opendir(base_path('plugins'));
+        while ($file_name = @readdir($resource)) {
+            if ($file_name == '.' || $file_name == '..')
+                continue;
+            $plugin_path = base_path('plugins').'/'.$file_name;
+            if (is_dir($plugin_path)) {
+                $plugin_info = json_decode(file_get_contents($plugin_path.'/package.json'), true);
+                $version_list[$plugin_info['name']] = $plugin_info['version'];
+            }
+        }
+        closedir($resource);
+        return $version_list;
     }
 
     private static function getPluginList()
@@ -99,22 +116,5 @@ class MarketController extends Controller
                                     '</a>'
                                     );
         }
-    }
-
-    private static function loadInstalledPluginList()
-    {
-        $version_list = array();
-        $resource = opendir(base_path('plugins'));
-        while ($file_name = @readdir($resource)) {
-            if ($file_name == '.' || $file_name == '..')
-                continue;
-            $plugin_path = base_path('plugins').'/'.$file_name;
-            if (is_dir($plugin_path)) {
-                $plugin_info = json_decode(file_get_contents($plugin_path.'/package.json'), true);
-                $version_list[$plugin_info['name']] = $plugin_info['version'];
-            }
-        }
-        closedir($resource);
-        return $version_list;
     }
 }
