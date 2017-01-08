@@ -101,7 +101,7 @@ class PluginController extends Controller
         $update_list = array();
         if (empty(option('market_source'))) {
             //A source maintained by me
-            Option::set('market_source', 'https://tpedutw-my.sharepoint.com/personal/gplane_tp_edu_tw/_layouts/15/guestaccess.aspx?guestaccesstoken=30xPBw1BGxF2CK8zgmE3ls4u5wJF51p6iW1EIW5jsW8%3d&docname=17414e47e4b494c75a732e75669cb87af&rev=1');
+            Option::set('market_source', 'https://tpedutw-my.sharepoint.com/personal/gplane_tp_edu_tw/_layouts/15/guestaccess.aspx?guestaccesstoken=KieP7dWgqkhQiIxYKgJWedtzNdvxIm8YKkU2Z%2boFSQ8%3d&docid=1df559d63cc074824ba01a6c929b028f8&rev=1');
         }
         $market_source_path = option('market_source');
         $json_content = '';
