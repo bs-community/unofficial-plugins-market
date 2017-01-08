@@ -22,22 +22,22 @@ class MarketController extends Controller
             return response()->json(array('recordsTotal' => 0, 'data' => array()));
         }
         $plugins_list = array();
-        $plugin_id_list = array_keys($raw_list);
-        foreach ($plugin_id_list as $plugin_id) {
-            $each_plugin = self::getSinglePluginInfo($raw_list[$plugin_id]);
+        $plugin_name_list = array_keys($raw_list);
+        foreach ($plugin_name_list as $plugin_name) {
+            $each_plugin = self::getSinglePluginInfo($raw_list[$plugin_name]);
             if (!$each_plugin) {
                 continue;
             } else {
                 $version_btn_class = '';
                 $version_status_text = '';
                 if (
-                    (!empty($raw_list[$plugin_id]['isPreview']) && $raw_list[$plugin_id]['isPreview']) ||
+                    (!empty($raw_list[$plugin_name]['isPreview']) && $raw_list[$plugin_name]['isPreview']) ||
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'rc') > 0) ||
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'beta') > 0) ||
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'alpha') > 0)) {
                     $version_btn_class = 'btn-warning';
                     $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-pre');
-                } elseif (!empty($each_plugin['version']) && !empty($installed_plugins_version_list[$each_plugin['id']]) && version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['id']]) == 1) {
+                } elseif (!empty($each_plugin['version']) && !empty($installed_plugins_version_list[$each_plugin['name']]) && version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['name']]) == 1) {
                     $version_btn_class = 'btn-success';
                     $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-new');
                 } else
@@ -87,13 +87,13 @@ class MarketController extends Controller
 
     private static function getSinglePluginInfo($plugin)
     {
-        if (empty($plugin['id']) || empty($plugin['display-name']) || empty($plugin['author']) || empty($plugin['url'])) {
+        if (empty($plugin['name']) || empty($plugin['title']) || empty($plugin['author']) || empty($plugin['url'])) {
             return false;
         } else {
             return array(
-                'id'           =>  $plugin['id'],
+                'name'         =>  $plugin['name'],
 
-                'display-name' =>  $plugin['display-name'],
+                'title'        =>  $plugin['title'],
 
                 'description'  =>  empty($plugin['description']) ? trans('GPlane\PluginsMarket::market.no-description') : $plugin['description'],
 
@@ -104,10 +104,10 @@ class MarketController extends Controller
                 'size'         =>  empty($plugin['size']) ? trans('GPlane\PluginsMarket::market.unknown') : $plugin['size'],
 
                 'operations'   =>  '<input type="button" id="plugin_'.
-                                    $plugin['id'].
+                                    $plugin['name'].
                                     '" class="btn %s btn-sm" title="%s" onclick="readyToDownload(\''.
-                                    $plugin['id'].
-                                    '\', \''.$plugin['display-name'].'\');" value="'.
+                                    $plugin['name'].
+                                    '\', \''.$plugin['title'].'\');" value="'.
                                     trans('GPlane\PluginsMarket::market.operations.download').
                                     '" /><a class="btn btn-default btn-sm" href="'.
                                     (empty($plugin['brief']) ? '' : $plugin['brief']).

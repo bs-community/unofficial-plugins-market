@@ -15,16 +15,16 @@ class PluginController extends Controller
 {
     public function downloadPlugin(Request $request)
     {
-        $id = '';
-        if ($request->has('id')) {
-            $id = $request->input('id');
+        $name = '';
+        if ($request->has('name')) {
+            $name = $request->input('name');
         } else {
             return response()->json(array('code' => -1, 'message' => 'Permission Denied.'));
         }
 
         //Prepare download
         $tmp_dir = storage_path('plugin-download-temp');
-        $tmp_path = $tmp_dir.'/tmp_'.$id.'.zip';
+        $tmp_path = $tmp_dir.'/tmp_'.$name.'.zip';
         if (!is_dir($tmp_dir)) {
             if (false === mkdir($tmp_dir)) {
                 return response()->json(array('code' => 1, 'message' => 'Write Permission Denied.'));
@@ -40,7 +40,7 @@ class PluginController extends Controller
             return response()->json(array('code' => 2, 'message' => 'Connection error.'));
         }
         $temp_list = json_decode($json_content, true);
-        $url = $temp_list[$id]['url'];
+        $url = $temp_list[$name]['url'];
 
         //Connection check
         if (!$fp = @fopen($url, 'rb')) {
@@ -80,11 +80,11 @@ class PluginController extends Controller
 
     public function firstRunPlugin(Request $request, PluginManager $plugins)
     {
-        if (!$request->has('id')) {
+        if (!$request->has('name')) {
             return;
         }
-        $id = $request->input('id');
-        $plugin = $plugins->getPlugin($id);
+        $name = $request->input('name');
+        $plugin = $plugins->getPlugin($name);
         event(new \GPlane\PluginsMarket\Events\PluginWasInstalled($plugin));
     }
 
@@ -101,7 +101,7 @@ class PluginController extends Controller
         $update_list = array();
         if (empty(option('market_source'))) {
             //A source maintained by me
-            Option::set('market_source', 'https://tpedutw-my.sharepoint.com/personal/gplane_tp_edu_tw/_layouts/15/guestaccess.aspx?guestaccesstoken=30xPBw1BGxF2CK8zgmE3ls4u5wJF51p6iW1EIW5jsW8%3d&docid=17414e47e4b494c75a732e75669cb87af&rev=1');
+            Option::set('market_source', 'https://tpedutw-my.sharepoint.com/personal/gplane_tp_edu_tw/_layouts/15/guestaccess.aspx?guestaccesstoken=30xPBw1BGxF2CK8zgmE3ls4u5wJF51p6iW1EIW5jsW8%3d&docname=17414e47e4b494c75a732e75669cb87af&rev=1');
         }
         $market_source_path = option('market_source');
         $json_content = '';
@@ -111,15 +111,15 @@ class PluginController extends Controller
             exit(0);
         }
         $market_plugins_list = json_decode($json_content, true);
-        foreach ($installed_plugins_version_list as $id => $current_version) {
-            if (empty($market_plugins_list[$id]['version']))
+        foreach ($installed_plugins_version_list as $name => $current_version) {
+            if (empty($market_plugins_list[$name]['version']))
                 continue;
-            if ($notification == 'both' && ((!empty($market_plugins_list[$id]['isPreview']) && $market_plugins_list[$id]['isPreview']) ||
-                stripos($market_plugins_list[$id]['version'], 'rc') > 0 ||
-                stripos($market_plugins_list[$id]['version'], 'beta') > 0 ||
-                stripos($market_plugins_list[$id]['version'], 'alpha') > 0)) {
+            if ($notification == 'both' && ((!empty($market_plugins_list[$name]['isPreview']) && $market_plugins_list[$name]['isPreview']) ||
+                stripos($market_plugins_list[$name]['version'], 'rc') > 0 ||
+                stripos($market_plugins_list[$name]['version'], 'beta') > 0 ||
+                stripos($market_plugins_list[$name]['version'], 'alpha') > 0)) {
                     $new_version_count['pre']++;
-            } elseif (version_compare($market_plugins_list[$id]['version'], $current_version) == 1)
+            } elseif (version_compare($market_plugins_list[$name]['version'], $current_version) == 1)
                 $new_version_count['release']++;
         }
         return response()->json(array('url' => url('admin/plugins-market'), 'number' => $new_version_count));

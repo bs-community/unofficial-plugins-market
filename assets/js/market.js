@@ -12,7 +12,7 @@ $('#plugin-table').DataTable({
     ajax: '/admin/plugins-market/data',
     createdRow: function (row, data, index) {},
     columns: [
-        {data: 'display-name'},
+        {data: 'title'},
         {data: 'description', 'width': '40%'},
         {data: 'author', 'width': '15%'},
         {data: 'version', 'width': '7%'},
@@ -21,8 +21,8 @@ $('#plugin-table').DataTable({
     ]
 });
 
-function readyToDownload(pluginId, displayName) {
-    if ($('#plugin_' + pluginId).hasClass('btn-warning')) {
+function readyToDownload(pluginName, pluginTitle) {
+    if ($('#plugin_' + pluginName).hasClass('btn-warning')) {
         swal({
             title: trans('market.preview.title'),
             text: trans('market.preview.text'),
@@ -30,19 +30,19 @@ function readyToDownload(pluginId, displayName) {
             showCancelButton: true,
             confirmButtonText: trans('market.preview.confirmButton'),
             cancelButtonText: trans('market.preview.cancelButton')
-        }).then(function () { return download(pluginId, displayName); });
+        }).then(function () { return download(pluginName, pluginTitle); });
     } else {
-        return download(pluginId, displayName);
+        return download(pluginName, pluginTitle);
     }
 };
 
-function download(pluginId, displayName) {
-    $('input#plugin-' + pluginId).attr({ disabled: true });
-    $('input#plugin-' + pluginId).val(trans('market.downloading'));
-    toastr.info(trans('market.readyToDownload', { 'plugin-name': displayName }));
+function download(pluginName, pluginTitle) {
+    $('input#plugin-' + pluginName).attr({ disabled: true });
+    $('input#plugin-' + pluginName).val(trans('market.downloading'));
+    toastr.info(trans('market.readyToDownload', { 'plugin-name': pluginTitle }));
     $.post(
         '/admin/plugins-market/download',
-        { id: pluginId },
+        { name: pluginName },
         function (data) {
             switch (data.code) {
                 case -1:
@@ -51,14 +51,14 @@ function download(pluginId, displayName) {
                 case 0:
                     if (data.enable) {
                         //会不会有Callback Hell啊？
-                        $.post('/admin/plugins/manage', { action: 'enable', id: pluginId }, function (data) {
+                        $.post('/admin/plugins/manage', { action: 'enable', id: pluginName }, function (data) {
                             if (data.errno == 0) {
                                 toastr.success(data.msg);
-                                $.post('/admin/plugins-market/first-run', { id: pluginId }, function (data) {});
+                                $.post('/admin/plugins-market/first-run', { id: pluginName }, function (data) {});
                             }
                         });
                     }
-                    toastr.success(trans('market.completeDownload', { 'plugin-name': displayName }));
+                    toastr.success(trans('market.completeDownload', { 'plugin-name': pluginTitle }));
                     break;
                 case 1:
                     toastr.error(trans('market.failedDownload', { 'message': trans('market.error.writePermission') }));
@@ -76,7 +76,7 @@ function download(pluginId, displayName) {
                     toastr.error(trans('market.error.unknown'));
                     break;
         };
-        $('input#plugin-' + pluginId).attr({ disabled: false });
-        $('input#plugin-' + pluginId).val(trans('market.download'));
+        $('input#plugin-' + pluginName).attr({ disabled: false });
+        $('input#plugin-' + pluginName).val(trans('market.download'));
     });
 };
