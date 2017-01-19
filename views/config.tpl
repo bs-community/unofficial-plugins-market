@@ -57,7 +57,7 @@
                     {!! trans('GPlane\PluginsMarket::config.list.text') !!}
                     <br>
                     <ul>
-                        <li>{{ trans('GPlane\PluginsMarket::config.list.source1') }}&nbsp;--&gt;&nbsp;<a href="http://to.be.filled/" target="_blank">http://to.be.filled/</a></li>
+                        <li>{{ trans('GPlane\PluginsMarket::config.list.source1') }}&nbsp;--&gt;&nbsp;<a href="http://plugin.sealfu.cf/" target="_blank">http://plugin.sealfu.cf/</a></li>
                     </ul>
                 </div><!-- /.box-body -->
             </div>
