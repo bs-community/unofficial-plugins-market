@@ -31,11 +31,11 @@ class MarketController extends Controller
                 $version_status = '';
                 if (
                     (!empty($raw_list[$plugin_name]['isPreview']) && $raw_list[$plugin_name]['isPreview']) ||
-                    (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'rc') > 0) ||
-                    (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'beta') > 0) ||
-                    (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'alpha') > 0)) {
+                    (!empty($each_plugin[0]['version']) && stripos($each_plugin[0]['version'], 'rc') > 0) ||
+                    (!empty($each_plugin[0]['version']) && stripos($each_plugin[0]['version'], 'beta') > 0) ||
+                    (!empty($each_plugin[0]['version']) && stripos($each_plugin[0]['version'], 'alpha') > 0)) {
                     $version_status = 'preview';
-                } elseif (!empty($each_plugin['version']) && !empty($installed_plugins_version_list[$each_plugin['name']]) && version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['name']]) == 1) {
+                } elseif (!empty($each_plugin[0]['version']) && !empty($installed_plugins_version_list[$each_plugin['name']]) && version_compare($each_plugin[0]['version'], $installed_plugins_version_list[$each_plugin['name']]) == 1) {
                     $version_status = 'new';
                 }
                 $each_plugin['versionStatus'] = $version_status;
@@ -80,9 +80,14 @@ class MarketController extends Controller
 
     private static function getSinglePluginInfo($plugin)
     {
-        if (empty($plugin['name']) || empty($plugin['title']) || empty($plugin['author']) || empty($plugin['url'])) {
+        if (empty($plugin['name']) || empty($plugin['title']) || empty($plugin['author']) || empty($plugin['url']) || empty($plugin['version'])) {
             return false;
         } else {
+            $versions = [];
+            if (!empty($plugin['old'])) {
+                $versions = array_keys($plugin['old']);
+            }
+            $versions[] = $plugin['version'];
             return array(
                 'name'         =>  $plugin['name'],
 
@@ -92,9 +97,9 @@ class MarketController extends Controller
 
                 'author'       =>  $plugin['author'],
 
-                'version'      =>  empty($plugin['version']) ? trans('GPlane\PluginsMarket::market.unknown') : $plugin['version'],
+                'version'      =>  $versions,
 
-                'size'         =>  empty($plugin['size']) ? trans('GPlane\PluginsMarket::market.unknown') : $plugin['size'],
+                'size'         =>  empty($plugin['size']) ? trans('GPlane\PluginsMarket::market.unknown') : [$plugin['size']],
 
                 'brief'        =>  empty($plugin['brief']) ? '' : $plugin['brief']);
         }

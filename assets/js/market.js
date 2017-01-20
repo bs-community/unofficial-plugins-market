@@ -36,13 +36,20 @@ $(document).ready(function() {
                 targets: 3,
                 title: trans('market.market.version'),
                 data: 'version',
-                width: '7%'
+                width: '9%',
+                render: function (data, type, row, meta) {
+                    options = '';
+                    for (var i = data.length - 1; i >= 0; i--) {
+                        options += '<option>' + data[i] + '</option>';
+                    }
+                    return '<select id="plugin-' + row.name + '-vers" class="form-control">' + options + '</select>';
+                }
             },
             {
                 targets: 4,
                 title: trans('market.market.size'),
                 data: 'size',
-                width: '10%'
+                width: '8%'
             },
             {
                 targets: 5,
@@ -64,7 +71,7 @@ $(document).ready(function() {
                         default:
                             break;
                     }
-                    let downloadButton = '<input type="button" class="btn ' + downloadButtonClass + ' btn-sm" title="' + downloadButtonHint + '"' +
+                    let downloadButton = '<input type="button" id="plugin-' + row.name + '" class="btn ' + downloadButtonClass + ' btn-sm" title="' + downloadButtonHint + '"' +
                         ' onclick="readyToDownload(\'' + row.name + '\',\'' + row.title + '\',\'' + row.versionStatus + '\');" value="' + trans('market.market.download') + '">';
                     let briefButton = '<a class="btn btn-default btn-sm" href="' + data + '" target="_blank" title="' + trans('market.market.briefHint') + '">' + trans('market.market.viewBrief') + '</a>'
                     return downloadButton + briefButton;
@@ -85,17 +92,18 @@ function readyToDownload(pluginName, pluginTitle, versionStatus) {
             cancelButtonText: trans('market.preview.cancelButton')
         }).then(function () { return download(pluginName, pluginTitle); });
     } else {
-        return download(pluginName, pluginTitle);
+        let version = $('select#plugin-' + pluginName + '-vers').val();
+        return download(pluginName, pluginTitle, version);
     }
 };
 
-function download(pluginName, pluginTitle) {
+function download(pluginName, pluginTitle, version) {
     $('input#plugin-' + pluginName).attr({ disabled: true });
     $('input#plugin-' + pluginName).val(trans('market.downloading'));
     toastr.info(trans('market.readyToDownload', { 'plugin-name': pluginTitle }));
     $.post(
         '/admin/plugins-market/download',
-        { name: pluginName },
+        { name: pluginName, version: version },
         function (data) {
             switch (data.code) {
                 case -1:

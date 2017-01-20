@@ -40,7 +40,11 @@ class PluginController extends Controller
             return response()->json(array('code' => 2, 'message' => 'Connection error.'));
         }
         $temp_list = json_decode($json_content, true);
-        $url = $temp_list[$name]['url'];
+        $url = '';
+        if ($request->version == $temp_list[$name]['version'])
+            $url = $temp_list[$name]['url'];
+        else
+            $url = $temp_list[$name]['old'][$request->version];
 
         //Connection check
         if (!$fp = @fopen($url, 'rb')) {
