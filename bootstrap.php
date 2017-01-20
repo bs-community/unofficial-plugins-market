@@ -18,7 +18,7 @@ return function (Dispatcher $events, Request $request) {
     //Determine to if replace default market of Blessing Skin Server
     if (option('replace_default_market')) {
         Hook::addRoute(function ($routers) {
-            $routers->get('admin/plugins/market', 'GPlane\PluginsMarket\MarketController@show')->middleware(['web', 'admin']);
+            $routers->get('admin/plugins/market', 'GPlane\PluginsMarket\Controllers\MarketController@show')->middleware(['web', 'admin']);
         });
     } else {
         Hook::addMenuItem('admin', 4, [
