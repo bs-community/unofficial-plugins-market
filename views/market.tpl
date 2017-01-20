@@ -29,18 +29,7 @@
 
         <div class="box">
             <div class="box-body table-bordered">
-                <table id="plugin-table" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>{{ trans('GPlane\PluginsMarket::market.display-name') }}</th>
-                            <th>{{ trans('GPlane\PluginsMarket::market.description') }}</th>
-                            <th>{{ trans('GPlane\PluginsMarket::market.author') }}</th>
-                            <th>{{ trans('GPlane\PluginsMarket::market.version') }}</th>
-                            <th>{{ trans('GPlane\PluginsMarket::market.size') }}</th>
-                            <th>{{ trans('GPlane\PluginsMarket::market.operations.title') }}</th>
-                        </tr>
-                    </thead>
-                </table>
+                <table id="plugin-table" class="table table-hover"></table>
             </div>
         </div>
 

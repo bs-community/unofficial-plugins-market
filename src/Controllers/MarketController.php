@@ -28,28 +28,21 @@ class MarketController extends Controller
             if (!$each_plugin) {
                 continue;
             } else {
-                $version_btn_class = '';
-                $version_status_text = '';
+                $version_status = '';
                 if (
                     (!empty($raw_list[$plugin_name]['isPreview']) && $raw_list[$plugin_name]['isPreview']) ||
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'rc') > 0) ||
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'beta') > 0) ||
                     (!empty($each_plugin['version']) && stripos($each_plugin['version'], 'alpha') > 0)) {
-                    $version_btn_class = 'btn-warning';
-                    $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-pre');
+                    $version_status = 'preview';
                 } elseif (!empty($each_plugin['version']) && !empty($installed_plugins_version_list[$each_plugin['name']]) && version_compare($each_plugin['version'], $installed_plugins_version_list[$each_plugin['name']]) == 1) {
-                    $version_btn_class = 'btn-success';
-                    $version_status_text = trans('GPlane\PluginsMarket::market.operations.version-new');
-                } else
-                    $version_btn_class = 'btn-primary';
-                $each_plugin['operations'] = sprintf($each_plugin['operations'], $version_btn_class, $version_status_text);
+                    $version_status = 'new';
+                }
+                $each_plugin['versionStatus'] = $version_status;
                 $plugins_list[] = $each_plugin;
             }
         }
-        $datatables_result = array(
-            'recordsTotal'    => sizeof($plugins_list),
-            'data'            => $plugins_list);
-        return response()->json($datatables_result);
+        return response()->json($plugins_list);
     }
 
     public static function loadInstalledPluginList()
@@ -103,18 +96,7 @@ class MarketController extends Controller
 
                 'size'         =>  empty($plugin['size']) ? trans('GPlane\PluginsMarket::market.unknown') : $plugin['size'],
 
-                'operations'   =>  '<input type="button" id="plugin_'.
-                                    $plugin['name'].
-                                    '" class="btn %s btn-sm" title="%s" onclick="readyToDownload(\''.
-                                    $plugin['name'].
-                                    '\', \''.$plugin['title'].'\');" value="'.
-                                    trans('GPlane\PluginsMarket::market.operations.download').
-                                    '" /><a class="btn btn-default btn-sm" href="'.
-                                    (empty($plugin['brief']) ? '' : $plugin['brief']).
-                                    '" target="_blank" title="'.trans('GPlane\PluginsMarket::market.operations.brief-hint').'">'.
-                                    trans('GPlane\PluginsMarket::market.operations.check-brief').
-                                    '</a>'
-                                    );
+                'brief'        =>  empty($plugin['brief']) ? '' : $plugin['brief']);
         }
     }
 }

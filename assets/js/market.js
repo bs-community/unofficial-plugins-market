@@ -1,28 +1,81 @@
+let pluginsTable;
+
 $(document).ready(function() {
     $('.box-body').css('min-height', $('.content-wrapper').height() - $('.content-header').outerHeight() - 120);
+    pluginsTable = $('#plugin-table').DataTable({
+        language: trans('vendor.datatables'),
+        responsive: true,
+        autoWidth: false,
+        processing: true,
+        ordering: false,
+        serverSide: false,   //未知原因，开了这个会有问题
+        ajax: {
+            url: '/admin/plugins-market/data',
+            dataSrc: ''
+        },
+        createdRow: function (row, data, index) {},
+        columnDefs: [
+            {
+                targets: 0,
+                title: trans('market.market.title'),
+                data: 'title'
+            },
+            {
+                targets: 1,
+                title: trans('market.market.description'),
+                data: 'description',
+                width: '40%'
+            },
+            {
+                targets: 2,
+                title: trans('market.market.author'),
+                data: 'author',
+                width: '10%'
+            },
+            {
+                targets: 3,
+                title: trans('market.market.version'),
+                data: 'version',
+                width: '7%'
+            },
+            {
+                targets: 4,
+                title: trans('market.market.size'),
+                data: 'size',
+                width: '10%'
+            },
+            {
+                targets: 5,
+                title: trans('market.market.operations'),
+                data: 'brief',
+                width: '20%',
+                render: function (data, type, row, meta) {
+                    let downloadButtonClass = 'btn-primary';
+                    let downloadButtonHint = '';
+                    switch (row.versionStatus) {
+                        case 'preview':
+                            downloadButtonClass = 'btn-warning';
+                            downloadButtonHint = trans('market.market.versionPre');
+                            break;
+                        case 'new':
+                            downloadButtonClass = 'btn-success';
+                            downloadButtonHint = trans('market.market.versionNew');
+                            break;
+                        default:
+                            break;
+                    }
+                    let downloadButton = '<input type="button" class="btn ' + downloadButtonClass + ' btn-sm" title="' + downloadButtonHint + '"' +
+                        ' onclick="readyToDownload(\'' + row.name + '\',\'' + row.title + '\',\'' + row.versionStatus + '\');" value="' + trans('market.market.download') + '">';
+                    let briefButton = '<a class="btn btn-default btn-sm" href="' + data + '" target="_blank" title="' + trans('market.market.briefHint') + '">' + trans('market.market.viewBrief') + '</a>'
+                    return downloadButton + briefButton;
+                }
+            }
+        ]
+    });
 });
 
-$('#plugin-table').DataTable({
-    language: trans('vendor.datatables'),
-    responsive: true,
-    autoWidth: false,
-    processing: true,
-    ordering: false,
-    serverSide: false,   //未知原因，开了这个会有问题
-    ajax: '/admin/plugins-market/data',
-    createdRow: function (row, data, index) {},
-    columns: [
-        {data: 'title'},
-        {data: 'description', 'width': '40%'},
-        {data: 'author', 'width': '15%'},
-        {data: 'version', 'width': '7%'},
-        {data: 'size', 'width': '10%'},
-        {data: 'operations', 'width': '15%'}
-    ]
-});
-
-function readyToDownload(pluginName, pluginTitle) {
-    if ($('#plugin_' + pluginName).hasClass('btn-warning')) {
+function readyToDownload(pluginName, pluginTitle, versionStatus) {
+    if (versionStatus == 'preview') {
         swal({
             title: trans('market.preview.title'),
             text: trans('market.preview.text'),

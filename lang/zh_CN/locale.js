@@ -3,6 +3,20 @@ $.locales['zh_CN'].market = {
     completeDownload: ':plugin-name 安装成功',
     failedDownload: '安装失败。信息：:message',
 
+    market: {
+        title: '名称',
+        description: '描述',
+        author: '作者',
+        size: '大小',
+        version: '版本',
+        operations: '操作',
+        download: '下载插件',
+        viewBrief: '查看介绍',
+        briefHint: '这个链接有可能是作者的主页',
+        versionNew: '新版本可用',
+        versionPre: '预览版 / 预发布版'
+    },
+
     preview: {
         title: '预览版提醒',
         text: '这是预览版，可能不稳定。确定下载？',

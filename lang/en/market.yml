@@ -1,17 +1,3 @@
-display-name: Name
-description: Description
-author: Author
-version: Version
-size: Size
-
-operations:
-    title: Operations
-    download: Download Now
-    check-brief: See Brief
-    brief-hint: This link may be a homepage of author.
-    version-new: New version available
-    version-pre: Preview / Pre-release version
-
 empty: No plugins~
 no-description: (No description)
 unknown: (Unknown)
