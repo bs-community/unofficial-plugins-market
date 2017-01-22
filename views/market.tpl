@@ -15,7 +15,6 @@
         <h1>
             {{ trans('GPlane\PluginsMarket::general.name') }}
         </h1>
-        <div class="breadcrumb"></div>
     </section>
 
     <!-- Main content -->
