@@ -112,7 +112,7 @@ function download(pluginName, pluginTitle, version) {
                 case 0:
                     if (data.enable) {
                         //会不会有Callback Hell啊？
-                        $.post('/admin/plugins/manage', { action: 'enable', id: pluginName }, function (data) {
+                        $.post('/admin/plugins/manage', { action: 'enable', name: pluginName }, function (data) {
                             if (data.errno == 0) {
                                 toastr.success(data.msg);
                                 $.post('/admin/plugins-market/first-run', { id: pluginName }, function (data) {});
