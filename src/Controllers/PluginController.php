@@ -19,7 +19,7 @@ class PluginController extends Controller
         if ($request->has('name')) {
             $name = $request->input('name');
         } else {
-            return response()->json(array('code' => -1, 'message' => 'Permission Denied.'));
+            return response()->json(['code' => -1]);
         }
 
         //Prepare download
@@ -27,7 +27,7 @@ class PluginController extends Controller
         $tmp_path = $tmp_dir.'/tmp_'.$name.'.zip';
         if (!is_dir($tmp_dir)) {
             if (false === mkdir($tmp_dir)) {
-                return response()->json(array('code' => 1, 'message' => 'Write Permission Denied.'));
+                return response()->json(['code' => 1]);
             }
         }
 
@@ -37,7 +37,7 @@ class PluginController extends Controller
         try {
             $json_content = file_get_contents($market_source_path);
         } catch (\Exception $e) {
-            return response()->json(array('code' => 2, 'message' => 'Connection error.'));
+            return response()->json(['code' => 2]);
         }
         $temp_list = json_decode($json_content, true);
         $url = '';
@@ -48,7 +48,7 @@ class PluginController extends Controller
 
         //Connection check
         if (!$fp = @fopen($url, 'rb')) {
-            return response()->json(array('code' => 2, 'message' => 'Connection error.'));
+            return response()->json(['code' => 2]);
         }
 
         //Start to download
@@ -56,7 +56,7 @@ class PluginController extends Controller
             Utils::download($url, $tmp_path);
         } catch (\Exception $e) {
             Storage::removeDir($tmp_dir);
-            return response()->json(array('code' => 3, 'message' => 'Download error.'));
+            return response()->json(['code' => 3]);
         }
 
         //Unzip file
@@ -68,12 +68,12 @@ class PluginController extends Controller
             } catch (\Exception $e) {
                 $zip->close();
                 Storage::removeDir($tmp_dir);
-                return response()->json(array('code' => 4, 'message' => 'Extract zip error.'));
+                return response()->json(['code' => 4]);
             }
         } else {
             $zip->close();
             Storage::removeDir($tmp_dir);
-            return response()->json(array('code' => 4, 'message' => 'Extract zip error.'));
+            return response()->json(['code' => 4]);
         }
         $zip->close();
 
