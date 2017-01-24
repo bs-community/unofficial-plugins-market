@@ -53,7 +53,7 @@ class MarketController extends Controller
             if ($file_name == '.' || $file_name == '..')
                 continue;
             $plugin_path = base_path('plugins').'/'.$file_name;
-            if (is_dir($plugin_path)) {
+            if (is_dir($plugin_path) && file_exists($plugin_path.'/package.json')) {
                 $plugin_info = json_decode(file_get_contents($plugin_path.'/package.json'), true);
                 $version_list[$plugin_info['name']] = $plugin_info['version'];
             }
