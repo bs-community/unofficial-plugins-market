@@ -118,14 +118,21 @@ class PluginController extends Controller
         foreach ($installed_plugins_version_list as $name => $current_version) {
             if (empty($market_plugins_list[$name]['version']))
                 continue;
-            if ($notification == 'both' && ((!empty($market_plugins_list[$name]['isPreview']) && $market_plugins_list[$name]['isPreview']) ||
+            if ((!empty($market_plugins_list[$name]['isPreview']) && $market_plugins_list[$name]['isPreview']) ||
                 stripos($market_plugins_list[$name]['version'], 'rc') > 0 ||
                 stripos($market_plugins_list[$name]['version'], 'beta') > 0 ||
-                stripos($market_plugins_list[$name]['version'], 'alpha') > 0)) {
+                stripos($market_plugins_list[$name]['version'], 'alpha') > 0) {
                     $new_version_count['pre']++;
             } elseif (version_compare($market_plugins_list[$name]['version'], $current_version) == 1)
                 $new_version_count['release']++;
         }
-        return response()->json(array('url' => url('admin/plugins-market'), 'number' => $new_version_count));
+        if ($notification == 'release_only') {
+            $new_version_count['pre'] = 0;
+        }
+        $market_link = url('admin/plugins-market');
+        if (option('replace_default_market')) {
+            $market_link = url('admin/plugins/market');
+        }
+        return response()->json(array('url' => $market_link, 'count' => $new_version_count));
     }
 }

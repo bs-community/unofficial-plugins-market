@@ -3,6 +3,11 @@ $.locales['en'].market = {
     completeDownload: ':plugin-name was installed successfully.',
     failedDownload: 'Failed to install. Message: :message',
 
+    check: {
+        new: ':count plugins in RELEASE version can be updated',
+        pre: ':count plugins in PREVIEW version can be updated'
+    },
+
     market: {
         title: 'Title',
         description: 'Description',
