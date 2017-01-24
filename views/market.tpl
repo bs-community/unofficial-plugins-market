@@ -3,7 +3,7 @@
 @section('title', trans('GPlane\PluginsMarket::general.name'))
 
 @section('style')
-<link rel="stylesheet" type="text/css" href="{{ plugin_assets('plugins-market', 'assets/css/market.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ plugin_assets('unofficial-plugins-market', 'assets/css/market.css') }}">
 @endsection
 
 @section('content')
@@ -38,5 +38,5 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ plugin_assets('plugins-market', 'assets/js/market.js') }}"></script>
+<script type="text/javascript" src="{{ plugin_assets('unofficial-plugins-market', 'assets/js/market.js') }}"></script>
 @endsection

@@ -6,12 +6,12 @@ use Illuminate\Contracts\Events\Dispatcher;
 
 return function (Dispatcher $events, Request $request) {
 
-    Hook::registerPluginTransScripts('plugins-market');
+    Hook::registerPluginTransScripts('unofficial-plugins-market');
 
     if ($request->is('admin/*') || $request->is('admin')) {
         $events->listen(App\Events\RenderingFooter::class, function ($event)
         {
-            $event->addContent('<script src="'.plugin_assets('plugins-market', 'assets/js/check.js').'"></script>');
+            $event->addContent('<script src="'.plugin_assets('unofficial-plugins-market', 'assets/js/check.js').'"></script>');
         });
     }
 
