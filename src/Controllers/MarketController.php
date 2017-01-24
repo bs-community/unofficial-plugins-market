@@ -31,11 +31,11 @@ class MarketController extends Controller
                 $version_status = '';
                 if (
                     (!empty($raw_list[$plugin_name]['isPreview']) && $raw_list[$plugin_name]['isPreview']) ||
-                    (!empty($each_plugin[0]['version']) && stripos($each_plugin[0]['version'], 'rc') > 0) ||
-                    (!empty($each_plugin[0]['version']) && stripos($each_plugin[0]['version'], 'beta') > 0) ||
-                    (!empty($each_plugin[0]['version']) && stripos($each_plugin[0]['version'], 'alpha') > 0)) {
+                    (stripos(end($each_plugin['version']), 'rc') > 0) ||
+                    (stripos(end($each_plugin['version']), 'beta') > 0) ||
+                    (stripos(end($each_plugin['version']), 'alpha') > 0)) {
                     $version_status = 'preview';
-                } elseif (!empty($each_plugin[0]['version']) && !empty($installed_plugins_version_list[$each_plugin['name']]) && version_compare($each_plugin[0]['version'], $installed_plugins_version_list[$each_plugin['name']]) == 1) {
+                } elseif (!empty($installed_plugins_version_list[$each_plugin['name']]) && version_compare(end($each_plugin['version']), $installed_plugins_version_list[$each_plugin['name']]) == 1) {
                     $version_status = 'new';
                 }
                 $each_plugin['versionStatus'] = $version_status;
