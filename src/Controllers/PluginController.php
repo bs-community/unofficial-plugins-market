@@ -4,6 +4,7 @@ namespace GPlane\PluginsMarket\Controllers;
 
 use Utils;
 use Option;
+use App\Events;
 use ZipArchive;
 use App\Services\Storage;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use App\Exceptions\PrettyPageException;
 
 class PluginController extends Controller
 {
-    public function downloadPlugin(Request $request)
+    public function downloadPlugin(Request $request, PluginManager $plugins)
     {
         $name = '';
         if ($request->has('name')) {
@@ -77,19 +78,14 @@ class PluginController extends Controller
         }
         $zip->close();
 
-        //Complete
+        //Clean temporary working dir
         Storage::removeDir($tmp_dir);
-        return response()->json(array('code' => 0, 'enable' => option('auto_enable_plugin')));
-    }
 
-    public function firstRunPlugin(Request $request, PluginManager $plugins)
-    {
-        if (!$request->has('name')) {
-            return;
-        }
-        $name = $request->input('name');
+        //Fire event of plugin was installed
         $plugin = $plugins->getPlugin($name);
         event(new \GPlane\PluginsMarket\Events\PluginWasInstalled($plugin));
+
+        return response()->json(array('code' => 0, 'enable' => option('auto_enable_plugin')));
     }
 
     public function updateCheck()

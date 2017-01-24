@@ -15,6 +15,14 @@ return function (Dispatcher $events, Request $request) {
         });
     }
 
+    //Listen the event of plugin was installed and call a callback function
+    $events->listen(GPlane\PluginsMarket\Events\PluginWasInstalled::class, function ($event) {
+        if (file_exists($file = $event->plugin->getPath().'/callbacks.php')) {
+            $callbacks = require $file;
+            call_user_func($callbacks[GPlane\PluginsMarket\Events\PluginWasInstalled::class], $event->plugin);
+        }
+    });
+
     //Determine to if replace default market of Blessing Skin Server
     if (option('replace_default_market')) {
         Hook::addRoute(function ($routers) {
@@ -38,7 +46,6 @@ return function (Dispatcher $events, Request $request) {
                             $router->get('/data', 'MarketController@ajaxPluginList');
                             $router->get('/check', 'PluginController@updateCheck');
                             $router->post('/download', 'PluginController@downloadPlugin');
-                            $router->post('/first-run', 'PluginController@firstRunPlugin');
                         });
 
     });
