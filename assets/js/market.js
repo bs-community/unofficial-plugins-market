@@ -1,4 +1,4 @@
-let pluginsTable;
+var pluginsTable;
 
 $(document).ready(function() {
     $('.box-body').css('min-height', $('.content-wrapper').height() - $('.content-header').outerHeight() - 120);
@@ -57,8 +57,8 @@ $(document).ready(function() {
                 data: 'brief',
                 width: '20%',
                 render: function (data, type, row, meta) {
-                    let downloadButtonClass = 'btn-primary';
-                    let downloadButtonHint = '';
+                    var downloadButtonClass = 'btn-primary';
+                    var downloadButtonHint = '';
                     switch (row.versionStatus) {
                         case 'preview':
                             downloadButtonClass = 'btn-warning';
@@ -71,9 +71,9 @@ $(document).ready(function() {
                         default:
                             break;
                     }
-                    let downloadButton = '<input type="button" id="plugin-' + row.name + '" class="btn ' + downloadButtonClass + ' btn-sm" title="' + downloadButtonHint + '"' +
+                    var downloadButton = '<input type="button" id="plugin-' + row.name + '" class="btn ' + downloadButtonClass + ' btn-sm" title="' + downloadButtonHint + '"' +
                         ' onclick="readyToDownload(\'' + row.name + '\',\'' + row.title + '\',\'' + row.versionStatus + '\');" value="' + trans('market.market.download') + '">';
-                    let briefButton = '<a class="btn btn-default btn-sm" href="' + data + '" target="_blank" title="' + trans('market.market.briefHint') + '">' + trans('market.market.viewBrief') + '</a>'
+                    var briefButton = '<a class="btn btn-default btn-sm" href="' + data + '" target="_blank" title="' + trans('market.market.briefHint') + '">' + trans('market.market.viewBrief') + '</a>'
                     return downloadButton + briefButton;
                 }
             }
@@ -92,7 +92,7 @@ function readyToDownload(pluginName, pluginTitle, versionStatus) {
             cancelButtonText: trans('market.preview.cancelButton')
         }).then(function () { return download(pluginName, pluginTitle); });
     } else {
-        let version = $('select#plugin-' + pluginName + '-vers').val();
+        var version = $('select#plugin-' + pluginName + '-vers').val();
         return download(pluginName, pluginTitle, version);
     }
 };
@@ -113,7 +113,7 @@ function download(pluginName, pluginTitle, version) {
                     if (data.enable) {
                         $.post('/admin/plugins/manage', { action: 'enable', name: pluginName }, function (data) {});
                     }
-                    toastr.success(trans('market.completeDownload', { 'plugin-name': pluginTitle }));
+                    toastr.success(trans('market.compvareDownload', { 'plugin-name': pluginTitle }));
                     break;
                 case 1:
                     toastr.error(trans('market.failedDownload', { 'message': trans('market.error.writePermission') }));
