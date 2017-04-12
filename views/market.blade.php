@@ -26,6 +26,10 @@
             </div>
         @endif
 
+        <div class="row">
+            <div class="col-md-12">{!! trans('GPlane\PluginsMarket::market.tip') !!}</div>
+        </div>
+
         <div class="box">
             <div class="box-body table-bordered">
                 <table id="plugin-table" class="table table-hover"></table>
