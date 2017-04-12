@@ -29,10 +29,13 @@
 ### 更新提醒
 新版本的插件往往是修复了旧版本的错误和提供了新功能。为了您第一时间能收到更新，此插件还提供“更新提醒”的功能。开启此功能后，如果插件有新版本发布，您可以在皮肤站的左侧栏看到标有可更新的插件数量的图标。
 - *不提醒*
+
 不对任何插件的新版本作提醒。（不推荐）
 - *仅正式版*
+
 某些插件的更新可能还处于预览、测试阶段而不稳定，此选项可以让您只收到正式版的更新提醒。（推荐，尤其是生产环境）
 - *全部提醒*
+
 对于预览版、测试版，像正式版那样同样收到更新提醒，并且预览版会以颜色不同的图标出现。适合喜欢尝鲜的用户。
 
 ### 自动启用
@@ -47,12 +50,12 @@
 
 ### API
 “插件市场”提供一些 API ，您的插件可以自由地使用这些 API：
-- 您可以通过在 `callbacks.php` 中，在回调函数数组中，加入“插件安装完成后”需要调用的函数。
+- 您可以通过在 `callbacks.php` 中，在回调函数数组中，加入 “插件安装完成后” 需要调用的函数。
 ```php
 <?php
 return [
-    GPlane\\PluginsMarket\\Events\\PluginWasInstalled::class => function () {
-        //Do something
+    GPlane\PluginsMarket\Events\PluginWasInstalled::class => function () {
+        //Do something after plugin was installed
     }
 ];
 ```
