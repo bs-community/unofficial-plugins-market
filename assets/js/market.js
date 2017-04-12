@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('.box-body').css('min-height', $('.content-wrapper').height() - $('.content-header').outerHeight() - 120);
     pluginsTable = $('#plugin-table').DataTable({
         language: trans('vendor.datatables'),
-        responsive: true,
+        scrollX: true,
         autoWidth: false,
         processing: true,
         ordering: false,
