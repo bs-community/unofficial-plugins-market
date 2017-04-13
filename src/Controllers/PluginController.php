@@ -85,7 +85,11 @@ class PluginController extends Controller
         $plugin = $plugins->getPlugin($name);
         event(new \GPlane\PluginsMarket\Events\PluginWasInstalled($plugin));
 
-        return response()->json(array('code' => 0, 'enable' => option('auto_enable_plugin')));
+        if (option('auto_enable_plugin')) {
+            $plugins->enable($name);
+        }
+        
+        return response()->json(['code' => 0]);
     }
 
     public function updateCheck()

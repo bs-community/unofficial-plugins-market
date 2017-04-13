@@ -110,9 +110,6 @@ function download(pluginName, pluginTitle, version) {
                     toastr.error(trans('market.failedDownload', { 'message': trans('market.error.requestPermission') }));
                     break;
                 case 0:
-                    if (data.enable) {
-                        $.post('/admin/plugins/manage', { action: 'enable', name: pluginName }, function (data) {});
-                    }
                     toastr.success(trans('market.completeDownload', { 'plugin-name': pluginTitle }));
                     break;
                 case 1:
