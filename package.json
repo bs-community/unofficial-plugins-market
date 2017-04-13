@@ -5,5 +5,5 @@
   "description": "GPlane\\PluginsMarket::general.description",
   "author": "gplane",
   "namespace": "GPlane\\PluginsMarket",
-  "config": "config.tpl"
+  "config": "config.blade.php"
 }
