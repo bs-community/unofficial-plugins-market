@@ -1,6 +1,6 @@
 var pluginsTable;
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('.box-body').css('min-height', $('.content-wrapper').height() - $('.content-header').outerHeight() - 120);
     pluginsTable = $('#plugin-table').DataTable({
         language: trans('vendor.datatables'),
@@ -8,14 +8,13 @@ $(document).ready(function() {
         autoWidth: false,
         processing: true,
         ordering: false,
-        serverSide: false,   //未知原因，开了这个会有问题
+        serverSide: false, //未知原因，开了这个会有问题
         ajax: {
             url: '/admin/plugins-market/data',
             dataSrc: ''
         },
         createdRow: function (row, data, index) {},
-        columnDefs: [
-            {
+        columnDefs: [{
                 targets: 0,
                 title: trans('market.market.title'),
                 data: 'title'
@@ -90,7 +89,9 @@ function readyToDownload(pluginName, pluginTitle, versionStatus) {
             showCancelButton: true,
             confirmButtonText: trans('market.preview.confirmButton'),
             cancelButtonText: trans('market.preview.cancelButton')
-        }).then(function () { return download(pluginName, pluginTitle); });
+        }).then(function () {
+            return download(pluginName, pluginTitle);
+        });
     } else {
         var version = $('select#plugin-' + pluginName + '-vers').val();
         return download(pluginName, pluginTitle, version);
@@ -98,37 +99,61 @@ function readyToDownload(pluginName, pluginTitle, versionStatus) {
 };
 
 function download(pluginName, pluginTitle, version) {
-    $('input#plugin-' + pluginName).attr({ disabled: true });
-    $('input#plugin-' + pluginName).val(trans('market.downloading'));
-    toastr.info(trans('market.readyToDownload', { 'plugin-name': pluginTitle }));
-    $.post(
-        '/admin/plugins-market/download',
-        { name: pluginName, version: version },
-        function (data) {
-            switch (data.code) {
-                case -1:
-                    toastr.error(trans('market.failedDownload', { 'message': trans('market.error.requestPermission') }));
-                    break;
-                case 0:
-                    toastr.success(trans('market.completeDownload', { 'plugin-name': pluginTitle }));
-                    break;
-                case 1:
-                    toastr.error(trans('market.failedDownload', { 'message': trans('market.error.writePermission') }));
-                    break;
-                case 2:
-                    toastr.error(trans('market.failedDownload', { 'message': trans('market.error.connection') }));
-                    break;
-                case 3:
-                    toastr.error(trans('market.failedDownload', { 'message': trans('market.error.download') }));
-                    break;
-                case 4:
-                    toastr.error(trans('market.failedDownload', { 'message': trans('market.error.unzip') }));
-                    break;
-                default:
-                    toastr.error(trans('market.error.unknown'));
-                    break;
-        };
-        $('input#plugin-' + pluginName).attr({ disabled: false });
-        $('input#plugin-' + pluginName).val(trans('market.download'));
+    $('input#plugin-' + pluginName).attr({
+        disabled: true
     });
+    $('input#plugin-' + pluginName).val(trans('market.downloading'));
+    toastr.info(trans('market.readyToDownload', {
+        'plugin-name': pluginTitle
+    }));
+    $.post(
+        '/admin/plugins-market/download', {
+            name: pluginName,
+            version: version
+        },
+        function (data) {
+            if (data.code === undefined) {
+                toastr.error(trans('market.error.unknown'));
+            } else {
+                switch (data.code) {
+                    case -1:
+                        toastr.error(trans('market.failedDownload', {
+                            'message': trans('market.error.requestPermission')
+                        }));
+                        break;
+                    case 0:
+                        toastr.success(trans('market.completeDownload', {
+                            'plugin-name': pluginTitle
+                        }));
+                        break;
+                    case 1:
+                        toastr.error(trans('market.failedDownload', {
+                            'message': trans('market.error.writePermission')
+                        }));
+                        break;
+                    case 2:
+                        toastr.error(trans('market.failedDownload', {
+                            'message': trans('market.error.connection')
+                        }));
+                        break;
+                    case 3:
+                        toastr.error(trans('market.failedDownload', {
+                            'message': trans('market.error.download')
+                        }));
+                        break;
+                    case 4:
+                        toastr.error(trans('market.failedDownload', {
+                            'message': trans('market.error.unzip')
+                        }));
+                        break;
+                    default:
+                        toastr.error(trans('market.error.unknown'));
+                        break;
+                };
+            }
+            $('input#plugin-' + pluginName).attr({
+                disabled: false
+            });
+            $('input#plugin-' + pluginName).val(trans('market.download'));
+        });
 };
