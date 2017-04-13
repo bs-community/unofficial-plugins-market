@@ -11,9 +11,15 @@ use Illuminate\Http\Request;
 use App\Services\PluginManager;
 use App\Http\Controllers\Controller;
 use App\Exceptions\PrettyPageException;
+use Illuminate\Contracts\Events\Dispatcher;
+use GPlane\PluginsMarket\Events\PluginWasInstalled;
 
 class PluginController extends Controller
 {
+    public function __construct(Dispatcher $dispatcher) {
+        $this->dispatcher = $dispatcher;
+    }
+
     public function downloadPlugin(Request $request, PluginManager $plugins)
     {
         $name = '';
@@ -82,13 +88,12 @@ class PluginController extends Controller
         Storage::removeDir($tmp_dir);
 
         //Fire event of plugin was installed
-        $plugin = $plugins->getPlugin($name);
-        event(new \GPlane\PluginsMarket\Events\PluginWasInstalled($plugin));
+        $this->dispatcher->fire($plugins->getPlugin($name));
 
         if (option('auto_enable_plugin')) {
             $plugins->enable($name);
         }
-        
+
         return response()->json(['code' => 0]);
     }
 
