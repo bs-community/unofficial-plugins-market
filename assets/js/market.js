@@ -113,7 +113,7 @@ function download(pluginName, pluginTitle, version) {
                     if (data.enable) {
                         $.post('/admin/plugins/manage', { action: 'enable', name: pluginName }, function (data) {});
                     }
-                    toastr.success(trans('market.compvareDownload', { 'plugin-name': pluginTitle }));
+                    toastr.success(trans('market.completeDownload', { 'plugin-name': pluginTitle }));
                     break;
                 case 1:
                     toastr.error(trans('market.failedDownload', { 'message': trans('market.error.writePermission') }));
