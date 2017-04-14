@@ -54,7 +54,7 @@
 ```php
 <?php
 return [
-    GPlane\PluginsMarket\Events\PluginWasInstalled::class => function () {
+    'PluginWasInstalled' => function () {
         //Do something after plugin was installed
     }
 ];
