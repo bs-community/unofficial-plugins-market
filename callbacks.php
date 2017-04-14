@@ -6,12 +6,12 @@ return [
             $manager->uninstall('plugins-market');
         }
     },
-    GPlane\PluginsMarket\Events\PluginWasInstalled::class => function () {
-        if (file_exists(plugin_assets('unofficial-plugins-market', 'views/config.tpl'))) {
-            unlink(plugin_assets('unofficial-plugins-market', 'views/config.tpl'));
+    'PluginWasInstalled' => function () {
+        if (file_exists($path = base_path('plugins/unofficial-plugins-market/views/config.tpl'))) {
+            unlink($path);
         }
-        if (file_exists(plugin_assets('unofficial-plugins-market', 'views/market.tpl'))) {
-            unlink(plugin_assets('unofficial-plugins-market', 'views/market.tpl'));
+        if (file_exists($path = base_path('plugins/unofficial-plugins-market/views/market.tpl'))) {
+            unlink($path);
         }
     }
 ];
