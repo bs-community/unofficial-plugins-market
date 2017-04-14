@@ -87,8 +87,14 @@ class PluginController extends Controller
         //Clean temporary working dir
         Storage::removeDir($tmp_dir);
 
-        //Fire event of plugin was installed
-        $this->dispatcher->fire($plugins->getPlugin($name));
+        //Call a function when plugin was installed
+        $plugin = $plugins->getPlugin($name);
+        if (file_exists($file = $plugin->getPath().'/callbacks.php')) {
+            $callbacks = require $file;
+            if (!empty($callback = $callbacks['PluginWasInstalled'])) {
+                app()->call($callback, [$plugin]);
+            }
+        }
 
         if (option('auto_enable_plugin')) {
             $plugins->enable($name);
