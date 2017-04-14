@@ -116,7 +116,7 @@ class PluginController extends Controller
         $update_list = array();
         if (empty(option('market_source'))) {
             //A source maintained by me
-            Option::set('market_source', 'https://plugin.gplane.win/plugin.json');
+            Option::set('market_source', 'http://plugin.gplane.win/plugin.json');
         }
         $market_source_path = option('market_source');
         $json_content = '';
