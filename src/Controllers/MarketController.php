@@ -11,6 +11,14 @@ class MarketController extends Controller
 {
     public function show()
     {
+        // Remove old view files
+        if (file_exists($path = base_path('plugins/unofficial-plugins-market/views/config.tpl'))) {
+            unlink($path);
+        }
+        if (file_exists($path = base_path('plugins/unofficial-plugins-market/views/market.tpl'))) {
+            unlink($path);
+        }
+        
         return view('GPlane\PluginsMarket::market');
     }
 
