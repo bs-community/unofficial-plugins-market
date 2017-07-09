@@ -38,7 +38,6 @@
                     <h3 class="box-title">{{ trans('GPlane\PluginsMarket::config.readme.title') }}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <blockquote><p><em>高考不简单</em></p></blockquote>
                     {!! trans('GPlane\PluginsMarket::config.readme.text') !!}
                     <br><br>
                     <span style="float: right;">Powered by <a href="http://github.com/g-plane" target="_blank">GPlane</a></span>
@@ -67,4 +66,3 @@
 </div><!-- /.content-wrapper -->
 
 @endsection
-
