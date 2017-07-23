@@ -1,8 +1,9 @@
 /* global $ */
 
-$.get('/admin/plugins-market/check', data => {
-  if (data.count.release > 0 || data.count.pre > 0) {
-    $('ul.nav').prepend(`
+function checkUpdates () {
+  $.get('/admin/plugins-market/check', data => {
+    if (data.count.release > 0 || data.count.pre > 0) {
+      $('ul.nav').prepend(`
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-plug"></i>
@@ -15,10 +16,10 @@ $.get('/admin/plugins-market/check', data => {
                     </ul>
                 </li>
     `)
-  }
+    }
 
-  if (data.count.release > 0) {
-    $('ul#plugin-update-menu').append(`
+    if (data.count.release > 0) {
+      $('ul#plugin-update-menu').append(`
                 <li>
                     <a href="${data.url}" title="${trans('market.check.new', {
   count: data.count.release.toString()
@@ -30,9 +31,9 @@ $.get('/admin/plugins-market/check', data => {
                     </a>
                 </li>
     `)
-  }
-  if (data.count.pre > 0) {
-    $('ul#plugin-update-menu').append(`
+    }
+    if (data.count.pre > 0) {
+      $('ul#plugin-update-menu').append(`
                 <li>
                     <a href="${data.url}" title="${trans('market.check.pre', {
   count: data.count.pre.toString()
@@ -44,5 +45,10 @@ $.get('/admin/plugins-market/check', data => {
                     </a>
                 </li>
     `)
-  }
-})
+    }
+  })
+}
+
+window.checkUpdates = checkUpdates
+
+checkUpdates()
