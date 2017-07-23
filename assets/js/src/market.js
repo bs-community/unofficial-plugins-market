@@ -1,6 +1,9 @@
-var pluginsTable
+/* global $ pluginsTable */
+'use strict'
 
-$(document).ready(function() {
+let pluginsTable
+
+$(document).ready(() => {
   $('.box-body').css(
     'min-height',
     $('.content-wrapper').height() - $('.content-header').outerHeight() - 120
@@ -16,7 +19,6 @@ $(document).ready(function() {
       url: '/admin/plugins-market/data',
       dataSrc: ''
     },
-    createdRow: function(row, data, index) {},
     columnDefs: [
       {
         targets: 0,
@@ -40,17 +42,17 @@ $(document).ready(function() {
         title: trans('market.market.version'),
         data: 'version',
         width: '9%',
-        render: function(data, type, row, meta) {
-          options = ''
-          for (var i = data.length - 1; i >= 0; i--) {
-            options += '<option>' + data[i] + '</option>'
+        render (data, type, row, meta) {
+          let options = ''
+          for (let i = data.length - 1; i >= 0; i--) {
+            options += `<option>${data[i]}</option>`
           }
           return (
-            '<select id="plugin-' +
-            row.name +
-            '-vers" class="form-control">' +
-            options +
-            '</select>'
+            `<select id="plugin-${
+              row.name
+            }-vers" class="form-control">${
+              options
+            }</select>`
           )
         }
       },
@@ -65,9 +67,9 @@ $(document).ready(function() {
         title: trans('market.market.operations'),
         data: 'brief',
         width: '20%',
-        render: function(data, type, row, meta) {
-          var downloadButtonClass = 'btn-primary'
-          var downloadButtonHint = ''
+        render (data, type, row, meta) {
+          let downloadButtonClass = 'btn-primary'
+          let downloadButtonHint = ''
           switch (row.versionStatus) {
             case 'preview':
               downloadButtonClass = 'btn-warning'
@@ -80,31 +82,31 @@ $(document).ready(function() {
             default:
               break
           }
-          var downloadButton =
-            '<input type="button" id="plugin-' +
-            row.name +
-            '" class="btn ' +
-            downloadButtonClass +
-            ' btn-sm" title="' +
-            downloadButtonHint +
-            '"' +
-            ' onclick="readyToDownload(\'' +
-            row.name +
-            "','" +
-            row.title +
-            "','" +
-            row.versionStatus +
-            '\');" value="' +
-            trans('market.market.download') +
-            '">'
-          var briefButton =
-            '<a class="btn btn-default btn-sm" href="' +
-            data +
-            '" target="_blank" title="' +
-            trans('market.market.briefHint') +
-            '">' +
-            trans('market.market.viewBrief') +
-            '</a>'
+          const downloadButton
+            = `<input type="button" id="plugin-${
+              row.name
+            }" class="btn ${
+              downloadButtonClass
+            } btn-sm" title="${
+              downloadButtonHint
+            }"`
+            + ` onclick="readyToDownload('${
+              row.name
+            }','${
+              row.title
+            }','${
+              row.versionStatus
+            }');" value="${
+              trans('market.market.download')
+            }">`
+          const briefButton
+            = `<a class="btn btn-default btn-sm" href="${
+              data
+            }" target="_blank" title="${
+              trans('market.market.briefHint')
+            }">${
+              trans('market.market.viewBrief')
+            }</a>`
           return downloadButton + briefButton
         }
       }
@@ -112,8 +114,8 @@ $(document).ready(function() {
   })
 })
 
-function readyToDownload(pluginName, pluginTitle, versionStatus) {
-  if (versionStatus == 'preview') {
+function readyToDownload (pluginName, pluginTitle, versionStatus) {
+  if (versionStatus === 'preview') {
     swal({
       title: trans('market.preview.title'),
       text: trans('market.preview.text'),
@@ -121,20 +123,18 @@ function readyToDownload(pluginName, pluginTitle, versionStatus) {
       showCancelButton: true,
       confirmButtonText: trans('market.preview.confirmButton'),
       cancelButtonText: trans('market.preview.cancelButton')
-    }).then(function() {
-      return download(pluginName, pluginTitle)
-    })
+    }).then(() => download(pluginName, pluginTitle))
   } else {
-    var version = $('select#plugin-' + pluginName + '-vers').val()
+    const version = $(`select#plugin-${pluginName}-vers`).val()
     return download(pluginName, pluginTitle, version)
   }
 }
 
-function download(pluginName, pluginTitle, version) {
-  $('input#plugin-' + pluginName).attr({
+function download (pluginName, pluginTitle, version) {
+  $(`input#plugin-${pluginName}`).attr({
     disabled: true
   })
-  $('input#plugin-' + pluginName).val(trans('market.downloading'))
+  $(`input#plugin-${pluginName}`).val(trans('market.downloading'))
   toastr.info(
     trans('market.readyToDownload', {
       'plugin-name': pluginTitle
@@ -144,9 +144,9 @@ function download(pluginName, pluginTitle, version) {
     '/admin/plugins-market/download',
     {
       name: pluginName,
-      version: version
+      version
     },
-    function(data) {
+    data => {
       if (data.code === undefined) {
         toastr.error(trans('market.error.unknown'))
       } else {
@@ -198,10 +198,12 @@ function download(pluginName, pluginTitle, version) {
             break
         }
       }
-      $('input#plugin-' + pluginName).attr({
+      $(`input#plugin-${pluginName}`).attr({
         disabled: false
       })
-      $('input#plugin-' + pluginName).val(trans('market.download'))
+      $(`input#plugin-${pluginName}`).val(trans('market.download'))
     }
   )
 }
+
+window.readyToDownload = readyToDownload

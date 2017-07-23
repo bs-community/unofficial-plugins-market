@@ -42,5 +42,5 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ plugin_assets('unofficial-plugins-market', 'assets/js/market.js') }}"></script>
+<script type="text/javascript" src="{{ plugin_assets('unofficial-plugins-market', 'assets/js/dist/market.js') }}"></script>
 @endsection

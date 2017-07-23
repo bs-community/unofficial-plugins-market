@@ -1,4 +1,6 @@
-$.get('/admin/plugins-market/check', function(data) {
+/* global $ */
+
+$.get('/admin/plugins-market/check', data => {
   if (data.count.release > 0 || data.count.pre > 0) {
     $('ul.nav').prepend(`
                 <li class="dropdown notifications-menu">
@@ -12,34 +14,35 @@ $.get('/admin/plugins-market/check', function(data) {
                         </li>
                     </ul>
                 </li>
-            `)
+    `)
   }
+
   if (data.count.release > 0) {
     $('ul#plugin-update-menu').append(`
                 <li>
                     <a href="${data.url}" title="${trans('market.check.new', {
-      count: data.count.release.toString()
-    })}">
+  count: data.count.release.toString()
+})}">
                         <i class="fa fa-plug text-green"></i>${trans(
-                          'market.check.new',
-                          { count: data.count.release.toString() }
-                        )}
+    'market.check.new',
+    { count: data.count.release.toString() }
+  )}
                     </a>
                 </li>
-            `)
+    `)
   }
   if (data.count.pre > 0) {
     $('ul#plugin-update-menu').append(`
                 <li>
                     <a href="${data.url}" title="${trans('market.check.pre', {
-      count: data.count.pre.toString()
-    })}">
+  count: data.count.pre.toString()
+})}">
                         <i class="fa fa-plug text-yellow"></i>${trans(
-                          'market.check.pre',
-                          { count: data.count.pre.toString() }
-                        )}
+    'market.check.pre',
+    { count: data.count.pre.toString() }
+  )}
                     </a>
                 </li>
-            `)
+    `)
   }
 })
