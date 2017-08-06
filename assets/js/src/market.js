@@ -164,6 +164,16 @@ function download (pluginName, pluginTitle, version) {
                 'plugin-name': pluginTitle
               })
             )
+            if ($(`input#plugin-${pluginName}`).hasClass('btn-success')) {
+              $(`input#plugin-${pluginName}`)
+                .removeClass('btn-success')
+                .addClass('btn-primary')
+            }
+            if ($(`input#plugin-${pluginName}`).hasClass('btn-warning')) {
+              $(`input#plugin-${pluginName}`)
+                .removeClass('btn-warning')
+                .addClass('btn-primary')
+            }
             break
           case 1:
             toastr.error(
