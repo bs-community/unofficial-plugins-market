@@ -140,13 +140,14 @@ function download (pluginName, pluginTitle, version) {
       'plugin-name': pluginTitle
     })
   )
-  $.post(
-    '/admin/plugins-market/download',
-    {
+  $.ajax({
+    type: 'POST',
+    url: '/admin/plugins-market/download',
+    data: {
       name: pluginName,
       version
     },
-    data => {
+    success (data) {
       if (data.code === undefined) {
         toastr.error(trans('market.error.unknown'))
       } else {
@@ -212,8 +213,12 @@ function download (pluginName, pluginTitle, version) {
         disabled: false
       })
       $(`input#plugin-${pluginName}`).val(trans('market.download'))
+    },
+    error () {
+      toastr.error(trans('market.error.unknown'))
+      $(`input#plugin-${pluginName}`).attr('disabled', false)
     }
-  )
+  })
 }
 
 window.readyToDownload = readyToDownload
