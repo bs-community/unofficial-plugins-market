@@ -2,9 +2,9 @@
 
 namespace GPlane\PluginsMarket\Controllers;
 
+use File;
 use Utils;
 use Option;
-use Storage;
 use App\Events;
 use ZipArchive;
 use Illuminate\Http\Request;
@@ -62,7 +62,7 @@ class PluginController extends Controller
         try {
             Utils::download($url, $tmp_path);
         } catch (\Exception $e) {
-            Storage::deleteDirectory($tmp_dir);
+            File::deleteDirectory($tmp_dir);
             return response()->json(['code' => 3]);
         }
 
@@ -74,18 +74,18 @@ class PluginController extends Controller
                 $zip->extractTo('./plugins');
             } catch (\Exception $e) {
                 $zip->close();
-                Storage::deleteDirectory($tmp_dir);
+                File::deleteDirectory($tmp_dir);
                 return response()->json(['code' => 4]);
             }
         } else {
             $zip->close();
-            Storage::deleteDirectory($tmp_dir);
+            File::deleteDirectory($tmp_dir);
             return response()->json(['code' => 4]);
         }
         $zip->close();
 
         //Clean temporary working dir
-        Storage::deleteDirectory($tmp_dir);
+        File::deleteDirectory($tmp_dir);
 
         //Call a function when plugin was installed
         $plugin = $plugins->getPlugin($name);
