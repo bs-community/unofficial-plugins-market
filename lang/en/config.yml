@@ -16,6 +16,9 @@ options:
     update-release-only: Release only
     update-both: Both release and preview
 
+    remove-old-text: Removing Old
+    remove-old-label: Remove old version before updating new version
+
 readme:
     title: ReadMe
     text: |

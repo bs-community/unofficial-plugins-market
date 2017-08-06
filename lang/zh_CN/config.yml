@@ -16,6 +16,9 @@ options:
     update-release-only: 仅正式版
     update-both: 全部提醒
 
+    remove-old-text: 移除旧版本
+    remove-old-label: 更新插件前删除旧版本的插件
+
 readme:
     title: 插件简介
     text: |

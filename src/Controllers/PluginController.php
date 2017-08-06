@@ -29,6 +29,10 @@ class PluginController extends Controller
             return response()->json(['code' => -1]);
         }
 
+        if (option('remove_old_before_updating_plugin') && File::exists('./plugins/'.$name)) {
+            File::deleteDirectory('./plugins'.$name);
+        }
+
         //Prepare download
         $tmp_dir = storage_path('plugin-download-temp');
         $tmp_path = $tmp_dir.'/tmp_'.$name.'.zip';

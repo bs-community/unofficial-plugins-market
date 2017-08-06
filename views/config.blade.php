@@ -20,6 +20,8 @@
         $form->text('market_source', trans('GPlane\PluginsMarket::config.options.source-text'))->hint(trans('GPlane\PluginsMarket::config.options.source-hint'));
         $form->checkbox('auto_enable_plugin', trans('GPlane\PluginsMarket::config.options.auto-enable-text'))->label(trans('GPlane\PluginsMarket::config.options.auto-enable-label'));
         $form->checkbox('replace_default_market', trans('GPlane\PluginsMarket::config.options.replace-default-market-text'))->label(trans('GPlane\PluginsMarket::config.options.replace-default-market-label'));
+        $form->checkbox('remove_old_before_updating_plugin', trans('GPlane\PluginsMarket::config.options.remove-old-text'))
+            ->label(trans('GPlane\PluginsMarket::config.options.remove-old-label'));
         $form->select('plugin_update_notification', trans('GPlane\PluginsMarket::config.options.update-notif-text'))
             ->option('none', trans('GPlane\PluginsMarket::config.options.update-none'))
             ->option('release_only', trans('GPlane\PluginsMarket::config.options.update-release-only'))
