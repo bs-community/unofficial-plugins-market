@@ -4,10 +4,7 @@
 let pluginsTable
 
 $(document).ready(() => {
-  $('.box-body').css(
-    'min-height',
-    $('.content-wrapper').height() - $('.content-header').outerHeight() - 120
-  )
+  $('.box-body').css('min-height', $('.content-wrapper').height() - $('.content-header').outerHeight() - 120)
   pluginsTable = $('#plugin-table').DataTable({
     language: trans('vendor.datatables'),
     scrollX: true,
@@ -47,13 +44,7 @@ $(document).ready(() => {
           for (let i = data.length - 1; i >= 0; i--) {
             options += `<option>${data[i]}</option>`
           }
-          return (
-            `<select id="plugin-${
-              row.name
-            }-vers" class="form-control">${
-              options
-            }</select>`
-          )
+          return `<select id="plugin-${row.name}-vers" class="form-control">${options}</select>`
         }
       },
       {
@@ -83,30 +74,17 @@ $(document).ready(() => {
               break
           }
           const downloadButton
-            = `<input type="button" id="plugin-${
-              row.name
-            }" class="btn ${
-              downloadButtonClass
-            } btn-sm" title="${
-              downloadButtonHint
-            }"`
-            + ` onclick="readyToDownload('${
-              row.name
-            }','${
-              row.title
-            }','${
-              row.versionStatus
-            }');" value="${
-              trans('market.market.download')
-            }">`
-          const briefButton
-            = `<a class="btn btn-default btn-sm" href="${
-              data
-            }" target="_blank" title="${
-              trans('market.market.briefHint')
-            }">${
-              trans('market.market.viewBrief')
-            }</a>`
+            = `<input
+              type="button"
+              id="plugin-${row.name}"
+              class="btn ${downloadButtonClass} btn-sm"
+              title="${downloadButtonHint}"`
+            + ` onclick="readyToDownload('${row.name}','${row.title}','${row.versionStatus}');" value="${trans(
+              'market.market.download'
+            )}">`
+          const briefButton = `<a class="btn btn-default btn-sm" href="${data}" target="_blank" title="${trans(
+            'market.market.briefHint'
+          )}">${trans('market.market.viewBrief')}</a>`
           return downloadButton + briefButton
         }
       }
@@ -115,6 +93,7 @@ $(document).ready(() => {
 })
 
 function readyToDownload (pluginName, pluginTitle, versionStatus) {
+  const version = $(`select#plugin-${pluginName}-vers`).val()
   if (versionStatus === 'preview') {
     swal({
       title: trans('market.preview.title'),
@@ -123,9 +102,8 @@ function readyToDownload (pluginName, pluginTitle, versionStatus) {
       showCancelButton: true,
       confirmButtonText: trans('market.preview.confirmButton'),
       cancelButtonText: trans('market.preview.cancelButton')
-    }).then(() => download(pluginName, pluginTitle))
+    }).then(() => download(pluginName, pluginTitle, version))
   } else {
-    const version = $(`select#plugin-${pluginName}-vers`).val()
     return download(pluginName, pluginTitle, version)
   }
 }
