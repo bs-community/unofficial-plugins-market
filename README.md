@@ -1,8 +1,4 @@
-*默认的插件市场源为 [http://plugin.gplane.win/plugin.json](http://plugin.gplane.win/plugin.json)*
-
-市场服务赞助：
-
-[![http://www.nmsq.party/](sponsor.png)](http://www.nmsq.party/)
+*默认的插件市场源为 [https://raw.githubusercontent.com/g-plane/plugins-market-data/master/plugins.json](https://raw.githubusercontent.com/g-plane/plugins-market-data/master/plugins.json)*
 
 # 插件市场 (Unofficial)
 
