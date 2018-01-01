@@ -7,7 +7,8 @@
   "namespace": "GPlane\\PluginsMarket",
   "config": "config.blade.php",
   "scripts": {
-    "build": "node build.js"
+    "build": "node scripts/build.js",
+    "zip": "node scripts/zip.js"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -16,6 +17,8 @@
     "eslint-config-gplane": "^1.4.0",
     "eslint-plugin-eslint-comments": "^2.0.1",
     "eslint-plugin-import": "^2.8.0",
+    "glob": "^7.1.2",
+    "jszip": "^3.1.5",
     "rollup": "^0.45.2",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-uglify": "^2.0.1"

@@ -1,13 +1,13 @@
 const rollup = require('rollup')
-const rollupBabel = require('rollup-plugin-babel')
-const rollupUglify = require('rollup-plugin-uglify')
+const babel = require('rollup-plugin-babel')
+const uglify = require('rollup-plugin-uglify')
 
 async function build (filename) {
   const bundle = await rollup.rollup({
     entry: `./assets/js/src/${filename}.js`,
     plugins: [
-      rollupBabel(),
-      rollupUglify()
+      babel(),
+      uglify()
     ]
   })
 
