@@ -658,9 +658,9 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-eslint-config-gplane@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-gplane/-/eslint-config-gplane-1.3.2.tgz#699b7c5b9fdfeabe3c6efffacbeb9869ba5d7082"
+eslint-config-gplane@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-gplane/-/eslint-config-gplane-1.4.0.tgz#c541d9d77cdec14f8bb874268d5b0f2077ab09c4"
 
 eslint-import-resolver-node@^0.3.1:
   version "0.3.1"
