@@ -1,5 +1,9 @@
-function checkUpdates () {
+(() => {
   $.get('/admin/plugins-market/check', data => {
+    if (!data.enabled) {
+      return
+    }
+
     if (data.count.release > 0 || data.count.pre > 0) {
       $('ul.nav').prepend(`
                 <li class="dropdown notifications-menu">
@@ -20,8 +24,8 @@ function checkUpdates () {
       $('ul#plugin-update-menu').append(`
                 <li>
                     <a href="${data.url}" title="${trans('market.check.new', {
-  count: data.count.release.toString()
-})}">
+    count: data.count.release.toString()
+  })}">
                         <i class="fa fa-plug text-green"></i>${trans(
     'market.check.new',
     { count: data.count.release.toString() }
@@ -34,8 +38,8 @@ function checkUpdates () {
       $('ul#plugin-update-menu').append(`
                 <li>
                     <a href="${data.url}" title="${trans('market.check.pre', {
-  count: data.count.pre.toString()
-})}">
+    count: data.count.pre.toString()
+  })}">
                         <i class="fa fa-plug text-yellow"></i>${trans(
     'market.check.pre',
     { count: data.count.pre.toString() }
@@ -45,8 +49,4 @@ function checkUpdates () {
     `)
     }
   })
-}
-
-window.checkUpdates = checkUpdates
-
-checkUpdates()
+})()

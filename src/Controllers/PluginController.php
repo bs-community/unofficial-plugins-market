@@ -113,7 +113,7 @@ class PluginController extends Controller
             Option::set('plugin_update_notification', 'release_only');
         $notification = option('plugin_update_notification');
         if ($notification == 'none')
-            return;
+            return json(['enabled' => false]);
         $new_version_count = array('release' => 0, 'pre' => 0);
         $installed_plugins_version_list = MarketController::loadInstalledPluginList();
         $market_plugins_version_list = array();
