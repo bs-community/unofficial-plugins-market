@@ -32,7 +32,7 @@
 
         <div class="box">
             <div class="box-body table-bordered">
-                <table id="plugin-table" class="table table-hover"></table>
+                <table id="market-table" class="table table-hover"></table>
             </div>
         </div>
 

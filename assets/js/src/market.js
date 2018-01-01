@@ -113,7 +113,7 @@ $(document).ready(() => {
     $('.content-wrapper').height() - $('.content-header').outerHeight() - 120
   )
   // eslint-disable-next-line new-cap
-  $('#plugin-table').DataTable({
+  $('#market-table').DataTable({
     language: trans('vendor.datatables'),
     scrollX: true,
     autoWidth: false,
