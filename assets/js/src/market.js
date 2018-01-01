@@ -160,12 +160,6 @@ $(document).ready(() => {
       },
       {
         targets: 4,
-        title: trans('market.market.size'),
-        data: 'size',
-        width: '8%'
-      },
-      {
-        targets: 5,
         title: trans('market.market.operations'),
         data: 'brief',
         width: '20%',

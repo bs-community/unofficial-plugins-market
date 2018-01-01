@@ -12,7 +12,6 @@ $.locales['en'].market = {
         title: 'Title',
         description: 'Description',
         author: 'Author',
-        size: 'Size',
         version: 'Version',
         operations: 'Operations',
         download: 'Download Now',

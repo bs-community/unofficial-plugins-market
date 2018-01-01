@@ -12,7 +12,6 @@ $.locales['zh_CN'].market = {
         title: '名称',
         description: '描述',
         author: '作者',
-        size: '大小',
         version: '版本',
         operations: '操作',
         download: '下载插件',

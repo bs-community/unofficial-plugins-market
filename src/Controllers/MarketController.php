@@ -107,8 +107,6 @@ class MarketController extends Controller
 
                 'version'      =>  $versions,
 
-                'size'         =>  empty($plugin['size']) ? trans('GPlane\PluginsMarket::market.unknown') : [$plugin['size']],
-
                 'brief'        =>  empty($plugin['brief']) ? '' : $plugin['brief']);
         }
     }
