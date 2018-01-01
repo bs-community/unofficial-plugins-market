@@ -1,5 +1,3 @@
-/* global $ */
-
 function checkUpdates () {
   $.get('/admin/plugins-market/check', data => {
     if (data.count.release > 0 || data.count.pre > 0) {
