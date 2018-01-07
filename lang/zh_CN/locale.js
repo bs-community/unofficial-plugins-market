@@ -35,7 +35,7 @@ $.locales['zh_CN'].market = {
         connection: '连接服务器失败',
         download: '下载失败',
         unzip: '解压失败',
-        unknown: '未知错误'
+        unknown: '未知错误 :msg'
     },
 
     download: '下载插件',

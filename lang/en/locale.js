@@ -35,7 +35,7 @@ $.locales['en'].market = {
         connection: 'Connection error.',
         download: 'Failed to download',
         unzip: 'Failed to unzip.',
-        unknown: 'Unknown error.'
+        unknown: 'Unknown error. :msg'
     },
 
     download: 'Download Now',

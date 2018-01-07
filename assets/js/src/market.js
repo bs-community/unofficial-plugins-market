@@ -19,7 +19,10 @@ function download (pluginName, pluginTitle, version) {
     },
     success (data) {
       if (!data.code) {
-        toastr.error(trans('market.error.unknown'))
+        toastr.error(trans(
+          'market.error.unknown',
+          { msg: data ? `(${data}})` : '' }
+        ))
       } else {
         switch (data.code) {
         case -1:
@@ -75,7 +78,10 @@ function download (pluginName, pluginTitle, version) {
           )
           break
         default:
-          toastr.error(trans('market.error.unknown'))
+          toastr.error(trans(
+            'market.error.unknown',
+            { msg: data.msg ? `(${data.msg}})` : '' }
+          ))
           break
         }
       }
