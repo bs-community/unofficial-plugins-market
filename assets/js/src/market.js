@@ -18,7 +18,8 @@ function download (pluginName, pluginTitle, version) {
       version
     },
     success (data) {
-      if (!data.code) {
+      // eslint-disable-next-line no-undefined
+      if (data.code === undefined || data.code === null) {
         toastr.error(trans(
           'market.error.unknown',
           { msg: data ? `(${data}})` : '' }
