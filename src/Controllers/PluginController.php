@@ -51,6 +51,7 @@ class PluginController extends Controller
             return response()->json(['code' => 2]);
         }
         $temp_list = json_decode($json_content, true);
+        $temp_list = collect($temp_list)->keyBy('name')->all();
         $url = '';
         if ($request->version == $temp_list[$name]['version'])
             $url = $temp_list[$name]['url'];
