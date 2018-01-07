@@ -26,8 +26,12 @@
             </div>
         @endif
 
-        <div class="row">
-            <div class="col-md-12">{!! trans('GPlane\PluginsMarket::market.tip') !!}</div>
+        <div class="row" style="margin-bottom: 5px">
+            <div class="col-md-10">{!! trans('GPlane\PluginsMarket::market.tip') !!}</div>
+
+            <div class="col-md-2">
+                <a href="https://github.com/g-plane" target="_blank" class="btn btn-primary">Follow me on GitHub</a>
+            </div>
         </div>
 
         <div class="box">
