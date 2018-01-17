@@ -96,8 +96,8 @@ class PluginController extends Controller
         $plugin = $plugins->getPlugin($name);
         if (file_exists($file = $plugin->getPath().'/callbacks.php')) {
             $callbacks = require $file;
-            if (!empty($callback = $callbacks['PluginWasInstalled'])) {
-                app()->call($callback, [$plugin]);
+            if (in_array('PluginWasInstalled', $callbacks)) {
+                app()->call($callbacks['PluginWasInstalled'], [$plugin]);
             }
         }
 
