@@ -59,9 +59,14 @@ class PluginController extends Controller
             $url = $temp_list[$name]['old'][$request->version];
 
         //Connection check
-        if (!$fp = @fopen($url, 'rb')) {
+        $context = stream_context_create(['http' => [
+            'method' => 'GET',
+            'header' => 'User-Agent: '.menv('USER_AGENT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36')
+        ]]);
+        if (!$fp = @fopen($url, 'rb', false, $context)) {
             return response()->json(['code' => 2]);
         }
+        fclose($fp);
 
         //Start to download
         try {
