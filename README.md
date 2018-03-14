@@ -1,7 +1,7 @@
 *默认的插件市场源为：*
 
 ```
-https://raw.githubusercontent.com/g-plane/plugins-market-data/master/plugins.json
+https://raw.githubusercontent.com/bs-community/plugins-market-data/master/plugins.json
 ```
 
 # 插件市场 (Unofficial)

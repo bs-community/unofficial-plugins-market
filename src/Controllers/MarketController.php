@@ -18,7 +18,7 @@ class MarketController extends Controller
         if (file_exists($path = base_path('plugins/unofficial-plugins-market/views/market.tpl'))) {
             unlink($path);
         }
-        
+
         return view('GPlane\PluginsMarket::market');
     }
 
@@ -76,7 +76,7 @@ class MarketController extends Controller
     {
         if (empty(option('market_source'))) {
             //A source maintained by me
-            Option::set('market_source', 'https://raw.githubusercontent.com/g-plane/plugins-market-data/master/plugins.json');
+            Option::set('market_source', 'https://raw.githubusercontent.com/bs-community/plugins-market-data/master/plugins.json');
         }
         $market_source_path = option('market_source');
         $json_content = '';
