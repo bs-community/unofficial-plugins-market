@@ -119,92 +119,99 @@ $(document).ready(() => {
     'min-height',
     $('.content-wrapper').height() - $('.content-header').outerHeight() - 120
   )
-  // eslint-disable-next-line new-cap
-  $('#market-table').DataTable({
-    language: trans('vendor.datatables'),
-    scrollX: true,
-    autoWidth: false,
-    processing: true,
-    ordering: false,
-    serverSide: false, // 未知原因，开了这个会有问题
-    ajax: {
-      url: '/admin/plugins-market/data',
-      dataSrc: ''
-    },
-    columnDefs: [
-      {
-        targets: 0,
-        title: trans('market.market.title'),
-        data: 'title'
+
+  $('#market-table')
+    // eslint-disable-next-line new-cap
+    .DataTable({
+      language: trans('vendor.datatables'),
+      scrollX: true,
+      autoWidth: false,
+      processing: true,
+      ordering: false,
+      serverSide: false, // 未知原因，开了这个会有问题
+      ajax: {
+        url: '/admin/plugins-market/data',
+        dataSrc: ''
       },
-      {
-        targets: 1,
-        title: trans('market.market.description'),
-        data: 'description',
-        width: '40%'
-      },
-      {
-        targets: 2,
-        title: trans('market.market.author'),
-        data: 'author',
-        width: '10%'
-      },
-      {
-        targets: 3,
-        title: trans('market.market.version'),
-        data: 'version',
-        width: '9%',
-        render (data, type, row) {
-          let options = ''
-          for (let i = data.length - 1; i >= 0; i--) {
-            options += `<option>${data[i]}</option>`
+      columnDefs: [
+        {
+          targets: 0,
+          title: trans('market.market.title'),
+          data: 'title'
+        },
+        {
+          targets: 1,
+          title: trans('market.market.description'),
+          data: 'description',
+          width: '40%'
+        },
+        {
+          targets: 2,
+          title: trans('market.market.author'),
+          data: 'author',
+          width: '10%'
+        },
+        {
+          targets: 3,
+          title: trans('market.market.version'),
+          data: 'version',
+          width: '9%',
+          render (data, type, row) {   // eslint-disable-line no-unused-vars
+            let options = ''
+            for (let i = data.length - 1; i >= 0; i--) {
+              options += `<option>${data[i]}</option>`
+            }
+            return `
+                <select id="plugin-${row.name}-vers" class="form-control">
+                ${options}
+                </select>`
           }
-          return `
-            <select id="plugin-${row.name}-vers" class="form-control">
-              ${options}
-            </select>`
-        }
-      },
-      {
-        targets: 4,
-        title: trans('market.market.operations'),
-        data: 'brief',
-        width: '20%',
-        render (data, type, row) {
-          let downloadButtonClass = 'btn-primary'
-          let downloadButtonHint = ''
-          switch (row.versionStatus) {
-          case 'preview':
-            downloadButtonClass = 'btn-warning'
-            downloadButtonHint = trans('market.market.versionPre')
-            break
-          case 'new':
-            downloadButtonClass = 'btn-success'
-            downloadButtonHint = trans('market.market.versionNew')
-            break
-          default:
-            break
+        },
+        {
+          targets: 4,
+          title: trans('market.market.operations'),
+          data: 'brief',
+          width: '20%',
+          render (data, type, row) {   // eslint-disable-line no-unused-vars
+            let downloadButtonClass = 'btn-primary'
+            let downloadButtonHint = ''
+            switch (row.versionStatus) {
+            case 'preview':
+              downloadButtonClass = 'btn-warning'
+              downloadButtonHint = trans('market.market.versionPre')
+              break
+            case 'new':
+              downloadButtonClass = 'btn-success'
+              downloadButtonHint = trans('market.market.versionNew')
+              break
+            default:
+              break
+            }
+            const downloadButton
+                = `<input
+                type="button"
+                id="plugin-${row.name}"
+                class="btn ${downloadButtonClass} btn-sm"
+                title="${downloadButtonHint}"`
+                + ' onclick="readyToDownload('
+                + `'${row.name}','${row.title}','${row.versionStatus}'`
+                + `);" value="${trans('market.market.download')}">`
+            const briefButton = `<a class="btn btn-default btn-sm"
+                href="${data}"
+                target="_blank"
+                title="${trans('market.market.briefHint')}">
+                ${trans('market.market.viewBrief')}
+                </a>`
+            return downloadButton + briefButton
           }
-          const downloadButton
-            = `<input
-              type="button"
-              id="plugin-${row.name}"
-              class="btn ${downloadButtonClass} btn-sm"
-              title="${downloadButtonHint}"`
-            + ' onclick="readyToDownload('
-            + `'${row.name}','${row.title}','${row.versionStatus}'`
-            + `);" value="${trans('market.market.download')}">`
-          const briefButton = `<a class="btn btn-default btn-sm"
-            href="${data}"
-            target="_blank"
-            title="${trans('market.market.briefHint')}">
-              ${trans('market.market.viewBrief')}
-            </a>`
-          return downloadButton + briefButton
         }
+      ]
+    })
+    .on('xhr.dt', (event, settings, json, xhr) => {  // eslint-disable-line
+      if (json === null) {
+        showModal(xhr.responseText, trans('general.fatalError'), 'danger')
       }
-    ]
-  })
+    })
 })
 
 window.readyToDownload = readyToDownload
