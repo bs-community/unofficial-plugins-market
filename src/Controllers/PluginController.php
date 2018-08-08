@@ -70,7 +70,11 @@ class PluginController extends Controller
 
         //Start to download
         try {
-            Utils::download($url, $tmp_path);
+            if (version_compare(config('app.version'), '3.4.0', '>=')) {
+                file_put_contents($tmp_path, file_get_contents($url, false, $context));
+            } else {
+                Utils::download($url, $tmp_path);
+            }
         } catch (\Exception $e) {
             File::deleteDirectory($tmp_dir);
             return response()->json(['code' => 3]);
