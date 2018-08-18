@@ -1,3 +1,5 @@
+# [DEPRECAT WARNING] Blessing Skin v3.5.0 已经包含官方的插件市场，您不再需要此插件！
+
 *默认的插件市场源为：*
 
 ```
